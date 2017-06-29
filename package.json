@@ -18,7 +18,7 @@
     "watch:files": "babel-node ./packages/makeen-cli/src/scripts/watch.js",
     "watch:server": "nodemon packages/makeen-boilerplate/build/index.js",
     "build": "babel-node ./packages/makeen-cli/src/scripts/build.js",
-    "start": "yarn run build && run-p watch:*"
+    "dev": "yarn run build && run-p watch:*"
   },
   "repository": {
     "type": "git",
