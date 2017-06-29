@@ -1,0 +1,28 @@
+{
+  "name": "makeen-mailer",
+  "version": "0.1.0",
+  "description": "Makeen module providing email services: sending emails using nodemailer, saving emails on disk and much more",
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makeen-project/makeen.git"
+  },
+  "author": "Victor Zamfir <victor@makeen.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/makeen-project/makeen/issues"
+  },
+  "homepage": "https://github.com/makeen-project/makeen#readme",
+  "dependencies": {
+    "express": "4.15.3",
+    "fs-extra": "^3.0.1",
+    "joi": "10.5.1",
+    "makeen": "*",
+    "nodemailer": "4.0.1",
+    "prop-types": "^15.5.10",
+    "octobus.js": "0.31.1",
+    "react": "15.5.4",
+    "react-dom": "15.5.4",
+    "serve-index": "1.9.0"
+  }
+}

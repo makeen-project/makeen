@@ -1,0 +1,7 @@
+{
+  "*.js": [
+    "prettier --single-quote --trailing-comma all --write",
+    "eslint --fix",
+    "git add"
+  ]
+}

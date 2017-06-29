@@ -1,0 +1,26 @@
+{
+  "name": "makeen-router",
+  "version": "0.1.0",
+  "description": "Makeen module that helps you register routers provided by other modules",
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makeen-project/makeen.git"
+  },
+  "author": "Victor Zamfir <victor@makeen.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/makeen-project/makeen/issues"
+  },
+  "homepage": "https://github.com/makeen-project/makeen#readme",
+  "dependencies": {
+    "boom": "4.2.0",
+    "express": "4.15.3",
+    "joi": "10.2.2",
+    "lodash": "^4.11.1",
+    "makeen": "*",
+    "mongodb": "2.2.24",
+    "mongodb-extended-json": "1.9.0",
+    "octobus.js": "0.31.0"
+  }
+}
