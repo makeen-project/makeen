@@ -1,5 +1,4 @@
 /* eslint-disable no-empty */
-// import express from 'express';
 import path from 'path';
 import fse from 'fs-extra';
 import Joi from 'joi';
@@ -12,7 +11,6 @@ import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import merge from 'lodash/merge';
 import { makeExecutableSchema } from 'graphql-tools';
 import mainResolvers from './graphql/resolvers';
-// import router from './router';
 
 const { fromMongo, toMongo } = helpers;
 
@@ -31,7 +29,6 @@ class Gql extends Module {
   typeDefs = [];
   resolvers = mainResolvers;
   middlewares = {};
-  // router = router;
 
   constructor(...args) {
     super(...args);
