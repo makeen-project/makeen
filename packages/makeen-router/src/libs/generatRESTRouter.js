@@ -3,12 +3,12 @@ import Boom from 'boom';
 import Joi from 'joi';
 import celebrate from 'celebrate';
 import { ObjectID as objectId } from 'mongodb';
-import EJSON from 'mongodb-extended-json';
 import pick from 'lodash/pick';
-import { wrapHandler, idValidator as mongoIdValidator } from './helpers';
-
-export const toBSON = query =>
-  EJSON.parse(typeof query !== 'string' ? JSON.stringify(query) : query);
+import {
+  wrapHandler,
+  idValidator as mongoIdValidator,
+  toBSON,
+} from './helpers';
 
 export default ({
   router = Router(),
