@@ -6,8 +6,7 @@
   },
   "description": "Boilerplate helping you to get started with makeen web framework.",
   "main": "build/index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/makeen-project/makeen.git"
@@ -43,6 +42,7 @@
     "makeen-file-storage": "*",
     "makeen-graphql": "*",
     "makeen-mailer": "*",
+    "makeen-octobus": "*",
     "makeen-router": "*",
     "makeen-storage": "*",
     "makeen-user": "*",

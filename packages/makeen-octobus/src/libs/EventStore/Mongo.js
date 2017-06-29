@@ -1,27 +1,4 @@
-import filter from 'lodash/filter';
-
-export class MemoryStore {
-  constructor() {
-    this.data = [];
-  }
-
-  save(msg) {
-    this.data.push(msg);
-  }
-
-  find(query = {}) {
-    return filter(this.data, query);
-  }
-
-  findChildren(parentId, query = {}) {
-    return filter(this.data, {
-      ...query,
-      parentId,
-    });
-  }
-}
-
-export class MongoStore {
+class MongoStore {
   constructor(db, collectionName = 'OctobusMessage') {
     this.db = db;
     this.collectionName = collectionName;
@@ -45,3 +22,5 @@ export class MongoStore {
       .toArray();
   }
 }
+
+export default MongoStore;

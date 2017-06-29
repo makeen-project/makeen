@@ -34,8 +34,9 @@ class Mailer extends Module {
     );
   }
 
-  setup({ transport, emailsDir, saveToDisk }) {
-    const { Mail } = this.registerServices({
+  async setup({ transport, emailsDir, saveToDisk }) {
+    const { registerServices } = await this.dependency('octobus');
+    const { Mail } = registerServices(this, {
       Mail: new MailService({
         transport,
         emailsDir,

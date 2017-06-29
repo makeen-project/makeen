@@ -21,9 +21,12 @@ class FileStorage extends Module {
   }
 
   async setup() {
-    await this.dependency('storage');
+    const [{ registerServices }] = await this.dependencies([
+      'octobus',
+      'storage',
+    ]);
     this.export(
-      this.registerServices({
+      registerServices(this, {
         File: new FileService({
           uploadDir: this.getConfig('uploadDir'),
         }),

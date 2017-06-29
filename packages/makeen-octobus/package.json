@@ -1,0 +1,21 @@
+{
+  "name": "makeen-octobus",
+  "version": "0.1.0",
+  "description": "Makeen octobus integration",
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makeen-project/makeen.git"
+  },
+  "author": "Victor Zamfir <victor@makeen.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/makeen-project/makeen/issues"
+  },
+  "homepage": "https://github.com/makeen-project/makeen#readme",
+  "dependencies": {
+    "lodash": "4.17.4",
+    "makeen": "*",
+    "octobus.js": "0.31.1"
+  }
+}

@@ -2,7 +2,6 @@
 import Joi from 'joi';
 import getPath from 'lodash/get';
 import camelCase from 'lodash/camelCase';
-import ServiceBus from './ServiceBus';
 
 class Module {
   constructor(config = {}) {
@@ -46,23 +45,6 @@ class Module {
     return this.manager.context;
   }
 
-  get serviceBus() {
-    if (!this._serviceBus) {
-      this._serviceBus = this.createServiceBus();
-    }
-    return this._serviceBus;
-  }
-
-  createServiceBus(routes = []) {
-    const serviceBus = new ServiceBus(this.name, routes);
-    serviceBus.connect(this.context.app.messageBus);
-    return serviceBus;
-  }
-
-  registerServices(services) {
-    return this.serviceBus.registerServices(services);
-  }
-
   export(map) {
     return Object.assign(this.manager.exportMap[this.name], map);
   }
@@ -81,6 +63,9 @@ class Module {
   }
 
   dependency(dependency) {
+    if (typeof dependency !== 'string') {
+      throw new Error(`Unexpected dependency name: ${dependency}!`);
+    }
     this.manager.addDependency(this.name, dependency);
     return this.manager.loads[dependency];
   }

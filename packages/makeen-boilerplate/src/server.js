@@ -3,13 +3,11 @@ import path from 'path';
 import Table from 'cli-table';
 import { inspect } from 'util';
 import { Logger, transports as loggerTransports } from 'winston';
-import { MessageBus, Application, Cache, eventStores } from 'makeen';
+import { Application, Cache } from 'makeen';
 import expressReactViews from 'express-react-views';
 import Config from './config';
 import modules from './modules';
 import middlewares from './config/middlewares';
-
-const { MemoryStore } = eventStores;
 
 class Server extends Application {
   constructor(...args) {
@@ -34,16 +32,6 @@ class Server extends Application {
         }),
       ],
     });
-
-    this.messageBus = new MessageBus();
-
-    // this.messageBus.onMessage(msg => {
-    //   console.log(JSON.stringify(msg, null, 2)); // eslint-disable-line
-    // });
-
-    const messageStore = new MemoryStore();
-    this.messageBus.onMessage(msg => messageStore.save(msg));
-    this.messageStore = messageStore;
 
     if (this.isDev) {
       const modulesTable = new Table({

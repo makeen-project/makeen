@@ -52,11 +52,14 @@ class User extends Module {
     mockUserConfig,
   }) {
     const exportMap = {};
-    const { createRepository } = await this.dependency('storage');
-    this.createServiceBus([{ matcher: /^mailer/ }]);
+    const [
+      { createRepository },
+      { createServiceBus },
+    ] = await this.dependencies(['storage', 'octobus']);
+    this.serviceBus = createServiceBus(this.name, [{ matcher: /^mailer/ }]);
 
     Object.assign(exportMap, {
-      ...this.registerServices({
+      ...this.serviceBus.registerServices({
         User: new UserService({
           jwtConfig: {
             key: jwtSecret,
