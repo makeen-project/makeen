@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { Router } from 'express';
 import celebrate from 'celebrate';
 import { ObjectID as objectId } from 'mongodb';
-import { helpers } from 'makeen';
+import { helpers } from 'makeen-router';
 
 const { wrapHandler, idValidator } = helpers;
 const router = Router();

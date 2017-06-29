@@ -2,7 +2,7 @@ import Boom from 'boom';
 import Joi from 'joi';
 import { ObjectID as objectId } from 'mongodb';
 import { Router } from 'express';
-import { helpers } from 'makeen';
+import { helpers } from 'makeen-router';
 
 const { wrapHandler, idValidator } = helpers;
 

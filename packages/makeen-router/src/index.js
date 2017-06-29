@@ -2,6 +2,7 @@ import Joi from 'joi';
 import { Module } from 'makeen';
 import path from 'path';
 import BaseRouter from './libs/Router';
+import * as helpers from './libs/helpers';
 
 class Router extends Module {
   static configSchema = {
@@ -47,4 +48,4 @@ class Router extends Module {
   }
 }
 
-export { Router as default, BaseRouter as Router };
+export { Router as default, BaseRouter as Router, helpers };

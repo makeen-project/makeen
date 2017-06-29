@@ -16,7 +16,6 @@
   "homepage": "https://github.com/makeen-project/makeen#readme",
   "dependencies": {
     "boom": "5.1.0",
-    "celebrate": "4.0.1",
     "dotenv": "4.0.0",
     "express": "4.15.3",
     "joi": "10.5.1",

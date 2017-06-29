@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { Router } from 'express';
 import celebrate from 'celebrate';
-import { helpers } from 'makeen';
+import { helpers } from 'makeen-router';
 import pick from 'lodash/pick';
 import userSchema from '../schemas/user';
 import { sanitizeUserData } from '../libs/helpers';
