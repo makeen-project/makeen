@@ -3,11 +3,23 @@ import { RefManager } from 'mongo-dnorm';
 import { Store, decorators } from 'octobus-mongodb-store';
 import { Module } from 'makeen';
 import Repository from './libs/Repository';
+import * as helpers from './libs/helpers';
 
 class Storage extends Module {
   static connect({ host, port, db }) {
     return MongoClient.connect(`mongodb://${host}:${port}/${db}`);
   }
+
+  hooks = {
+    'graphql:buildContext': ({ context }) => {
+      const { fromMongo, toMongo } = helpers;
+
+      Object.assign(context, {
+        fromMongo,
+        toMongo,
+      });
+    },
+  };
 
   constructor(...args) {
     super(...args);
@@ -53,4 +65,4 @@ class Storage extends Module {
   }
 }
 
-export { Storage as default, Repository };
+export { Storage as default, Repository, helpers };

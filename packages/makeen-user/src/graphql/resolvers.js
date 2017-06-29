@@ -1,17 +1,13 @@
-import { helpers } from 'makeen';
-
-const { fromMongo } = helpers;
-
 export default {
   Query: {
-    users: (_, args, { app }) =>
+    users: (_, args, { app, fromMongo }) =>
       app.modules
         .get('user')
         .UserRepository.findMany()
         .then(c => c.map(fromMongo).toArray()),
   },
   Mutation: {
-    login: async (_, { username, password }, { app, req }) => {
+    login: async (_, { username, password }, { app, req, fromMongo }) => {
       const result = await app.modules
         .get('user')
         .User.login({ username, password });

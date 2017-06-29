@@ -6,13 +6,11 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 import has from 'lodash/has';
 import identity from 'lodash/identity';
-import { Module, helpers } from 'makeen';
+import { Module } from 'makeen';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import merge from 'lodash/merge';
 import { makeExecutableSchema } from 'graphql-tools';
 import mainResolvers from './graphql/resolvers';
-
-const { fromMongo, toMongo } = helpers;
 
 class Gql extends Module {
   static configSchema = {
@@ -152,6 +150,12 @@ class Gql extends Module {
       addMiddleware,
     });
 
+    const context = {};
+
+    await this.manager.run('graphql:buildContext', () => {}, {
+      context,
+    });
+
     const schema = this.buildSchema();
 
     this.app.middlewares.insertBefore(
@@ -163,11 +167,10 @@ class Gql extends Module {
         params: req => ({
           schema,
           context: {
+            ...context,
             req,
             app: req.app,
             user: req.user,
-            fromMongo,
-            toMongo,
           },
         }),
       },
