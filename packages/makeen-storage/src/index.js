@@ -1,7 +1,8 @@
 import { MongoClient } from 'mongodb';
 import { RefManager } from 'mongo-dnorm';
 import { Store, decorators } from 'octobus-mongodb-store';
-import { Module, Repository } from 'makeen';
+import { Module } from 'makeen';
+import Repository from './libs/Repository';
 
 class Storage extends Module {
   static connect({ host, port, db }) {
@@ -52,4 +53,4 @@ class Storage extends Module {
   }
 }
 
-export default Storage;
+export { Storage as default, Repository };

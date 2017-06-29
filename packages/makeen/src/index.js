@@ -6,7 +6,6 @@ import * as helpers from './libs/helpers';
 import ModulesManager from './libs/ModulesManager';
 import Module from './libs/Module';
 import OrderedList from './libs/OrderedList';
-import Repository from './libs/Repository';
 
 export {
   Application,
@@ -17,5 +16,4 @@ export {
   ModulesManager,
   Module,
   OrderedList,
-  Repository,
 };

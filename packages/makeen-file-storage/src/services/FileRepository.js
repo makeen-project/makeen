@@ -1,7 +1,7 @@
 import { decorators } from 'octobus.js';
 import fs from 'fs-extra';
 import { ObjectID as objectId } from 'mongodb';
-import { Repository } from 'makeen';
+import { Repository } from 'makeen-storage';
 import fileSchema from '../schemas/file';
 
 const { service } = decorators;

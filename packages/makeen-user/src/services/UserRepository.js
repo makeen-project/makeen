@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { Repository } from 'makeen';
+import { Repository } from 'makeen-storage';
 import userSchema from '../schemas/user';
 
 class UserRepository extends Repository {
