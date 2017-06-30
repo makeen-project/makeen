@@ -13,7 +13,9 @@ router.post('/rpc/:topic(.*)', async (req, res) => {
   const message = new Message({ topic, data });
 
   try {
-    const result = await req.app.messageBus.send(message);
+    const result = await req.app.modules
+      .get('octobus')
+      .messageBus.send(message);
     return res.json(result);
   } catch (error) {
     return res.status(500).send({ error });

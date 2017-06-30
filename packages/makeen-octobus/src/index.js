@@ -19,7 +19,6 @@ class Octobus extends Module {
 
     this.messageStore = new MemoryStore();
     this.messageBus.onMessage(msg => this.messageStore.save(msg));
-    this.app.messageBus = this.messageBus;
     this.serviceBus = this.createServiceBus('main');
   }
 
@@ -43,7 +42,7 @@ class Octobus extends Module {
   }
 
   async setup() {
-    const { createServiceBus, registerServices } = this;
+    const { createServiceBus, registerServices, messageBus } = this;
 
     await this.manager.run('octobus:createServiceBus', () => {}, {
       create: createServiceBus,
@@ -62,6 +61,7 @@ class Octobus extends Module {
     );
 
     this.export({
+      messageBus,
       createServiceBus,
       registerServices,
     });
