@@ -106,7 +106,7 @@ class ModulesManager extends EventEmitter {
 
   async run(commandName, command, context) {
     await this.invoke(`before:${commandName}`, context);
-    await Promise.all(
+    const results = await Promise.all(
       this.getModules().map(module => {
         if (module.hooks[commandName]) {
           return module.hooks[commandName](context);
@@ -115,6 +115,7 @@ class ModulesManager extends EventEmitter {
       }),
     );
     await this.invoke(`after:${commandName}`, context);
+    return results;
   }
 }
 
