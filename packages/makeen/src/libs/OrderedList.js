@@ -64,6 +64,18 @@ class List extends Array {
     return find(this, { id });
   }
 
+  move(id, pivot) {
+    if (pivot.before) {
+      return this.moveBefore(id, pivot);
+    }
+
+    if (pivot.after) {
+      return this.moveAfter(id, pivot);
+    }
+
+    throw new Error(`Invalid pivot format: ${pivot}!`);
+  }
+
   moveBefore(id, pivotId) {
     const index = findIndexById(this, id);
     const item = this[index];
