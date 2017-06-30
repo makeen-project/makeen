@@ -5,7 +5,6 @@ import serverIndex from 'serve-index';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import MailService from './services/Mail';
-import UserSignupTemplate from './templates/UserSignup';
 
 class Mailer extends Module {
   static configSchema = {
@@ -46,20 +45,6 @@ class Mailer extends Module {
             React.createElement(component, context),
           ),
       }),
-    });
-
-    this.serviceBus.subscribe('user.User.didSignUp', ({ message }) => {
-      const { user, account } = message.data;
-
-      Mail.send({
-        to: user.email,
-        subject: 'welcome',
-        template: UserSignupTemplate,
-        context: {
-          user,
-          account,
-        },
-      });
     });
 
     this.export({

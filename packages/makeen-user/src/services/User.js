@@ -8,6 +8,7 @@ import moment from 'moment';
 import { decorators, ServiceContainer } from 'octobus.js';
 import crypto from 'crypto';
 import ForgotPasswordTemplaate from '../mailerTemplates/ForgotPassword';
+import UserSignupTemplate from '../mailerTemplates/UserSignup';
 import { FailedLogin } from '../libs/errors';
 
 const { service, withSchema } = decorators;
@@ -244,7 +245,7 @@ class User extends ServiceContainer {
   }
 
   @service()
-  async signup({ username, email }, { message, publish }) {
+  async signup({ username, email }, { message }) {
     const existingUser = await this.UserRepository.findOne({
       query: {
         $or: [
@@ -275,9 +276,14 @@ class User extends ServiceContainer {
       ...message.data,
     });
 
-    publish('User.didSignUp', {
-      user,
-      account,
+    this.Mail.send({
+      to: user.email,
+      subject: 'welcome',
+      template: UserSignupTemplate,
+      context: {
+        user,
+        account,
+      },
     });
 
     return {
