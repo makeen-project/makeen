@@ -1,0 +1,21 @@
+{
+  "name": "makeen-health",
+  "version": "0.1.0",
+  "description": "Makeen health module.",
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makeen-project/makeen.git"
+  },
+  "author": "Victor Zamfir <victor@makeen.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/makeen-project/makeen/issues"
+  },
+  "homepage": "https://github.com/makeen-project/makeen#readme",
+  "dependencies": {
+    "express": "4.15.3",
+    "joi": "10.5.1",
+    "makeen": "*"
+  }
+}

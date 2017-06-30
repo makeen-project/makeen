@@ -6,8 +6,8 @@ import UserModule from 'makeen-user';
 import GQLModule from 'makeen-graphql';
 import MailerModule from 'makeen-mailer';
 import FileStorageModule from 'makeen-file-storage';
+import HealthModule from 'makeen-health';
 import Config from '../config';
-import HealthModule from './health';
 import PlayModule from './play';
 
 export default [

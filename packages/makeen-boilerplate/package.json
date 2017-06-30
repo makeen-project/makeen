@@ -40,6 +40,7 @@
     "makeen": "*",
     "makeen-file-storage": "*",
     "makeen-graphql": "*",
+    "makeen-health": "*",
     "makeen-logger": "*",
     "makeen-mailer": "*",
     "makeen-octobus": "*",
