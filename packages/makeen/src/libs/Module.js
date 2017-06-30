@@ -5,10 +5,7 @@ import camelCase from 'lodash/camelCase';
 
 class Module {
   constructor(config = {}) {
-    if (!this.name) {
-      this.name = camelCase(this.constructor.name);
-    }
-
+    this.name = this.name || config.name || camelCase(this.constructor.name);
     this.config = this.constructor.configSchema
       ? Joi.attempt(config, this.constructor.configSchema)
       : config;
