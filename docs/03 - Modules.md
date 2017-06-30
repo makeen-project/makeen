@@ -48,7 +48,7 @@ class Simple extends Module {
   }
 }
 ```
-Inside a module you have access to the manager though `this.manager` and the application through `this.app`.
+Inside a module you have access to the manager by `this.manager` and the application by `this.app`.
 
 Let's rewrite the 'Hello, world!' example by using a module:
 
