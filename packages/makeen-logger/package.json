@@ -1,0 +1,21 @@
+{
+  "name": "makeen-logger",
+  "version": "0.1.0",
+  "description": "Makeen logger module by the usage of winston.",
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makeen-project/makeen.git"
+  },
+  "author": "Victor Zamfir <victor@makeen.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/makeen-project/makeen/issues"
+  },
+  "homepage": "https://github.com/makeen-project/makeen#readme",
+  "dependencies": {
+    "joi": "10.5.1",
+    "makeen": "*",
+    "winston": "2.3.1"
+  }
+}

@@ -1,4 +1,5 @@
 import OctobusModule from 'makeen-octobus';
+import LoggerModule from 'makeen-logger';
 import RouterModule from 'makeen-router';
 import StorageModule from 'makeen-storage';
 import UserModule from 'makeen-user';
@@ -11,6 +12,7 @@ import PlayModule from './play';
 
 export default [
   new OctobusModule(Config.get('modules.octobus')),
+  new LoggerModule(Config.get('modules.logger')),
   new StorageModule(Config.get('modules.storage')),
   new UserModule(Config.get('modules.user')),
   new MailerModule(Config.get('modules.mailer')),

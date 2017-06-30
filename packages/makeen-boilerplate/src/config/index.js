@@ -24,7 +24,6 @@ Config.merge({
   morgan: {
     format: 'dev',
   },
-  logsDir: path.resolve(__dirname, '../../logs'),
   maxUploadSize: '20mb',
   modules: {
     storage: {
@@ -74,6 +73,9 @@ Config.merge({
       middlewarePivot: {
         after: 'isMethod',
       },
+    },
+    logger: {
+      logsDir: path.resolve(__dirname, '../../logs'),
     },
   },
 });

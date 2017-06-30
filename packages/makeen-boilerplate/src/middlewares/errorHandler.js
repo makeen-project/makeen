@@ -5,7 +5,7 @@ const errorHandler = (err, req, res, next) => {
     return res.status(err.output.statusCode).json(err.output.payload);
   }
 
-  req.app.logger.error(err);
+  req.app.modules.get('logger.log').error(err);
 
   res.status(500);
   res.json({

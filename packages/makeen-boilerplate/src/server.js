@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
-import path from 'path';
 import Table from 'cli-table';
 import { inspect } from 'util';
-import { Logger, transports as loggerTransports } from 'winston';
 import { Application, Cache } from 'makeen';
 import expressReactViews from 'express-react-views';
 import Config from './config';
@@ -19,19 +17,6 @@ class Server extends Application {
 
     this.config = Config;
     this.cache = new Cache();
-    this.logger = new Logger({
-      transports: [
-        new loggerTransports.Console({
-          colorize: true,
-        }),
-        new loggerTransports.File({
-          filename: path.join(Config.get('logsDir'), 'logs.log'),
-          level: 'error',
-          handleExceptions: true,
-          humanReadableUnhandledException: true,
-        }),
-      ],
-    });
 
     if (this.isDev) {
       const modulesTable = new Table({
