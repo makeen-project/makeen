@@ -3,7 +3,7 @@ Makeen's goal is to be a simple, but full featured framework for building server
 Our plan is to provide enough functionality to eliminate the tedious and repetitive tasks that take like 80% of the development time (could go down to 70%, 60%), so you can concentrate on the real core of your project.
 
 We use express.js as a server side web framework, which is simple, unopinionated, powerful and fast.
-That is great because you're free to do your own setup, but when it comes to integrating 3rd party extensions you have to follow a strict and rigid process and often times you'll run into issues.
+That is great because you're free to do your own setup, but when it comes to integrating 3rd party extensions you have to follow strict and rigid instructions and often times you'll run into issues.
 
 Simplicity always comes with a cost, and that is extensibility.
 We tried to solve that by providing a module system that allows you to divide your project into multiple bits that can be developed in isolation and collaboration.

@@ -5,9 +5,12 @@ import camelCase from 'lodash/camelCase';
 
 class Module {
   constructor(config = {}) {
-    this.name = this.name || config.name || camelCase(this.constructor.name);
+    this.name = config.name || this.name || camelCase(this.constructor.name);
     this.config = this.constructor.configSchema
-      ? Joi.attempt(config, this.constructor.configSchema)
+      ? Joi.attempt(config, {
+        name: Joi.string(),
+        ...this.constructor.configSchema,
+      })
       : config;
 
     this.filePath = new Error().stack
@@ -27,7 +30,7 @@ class Module {
   get manager() {
     if (!this._manager) {
       throw new Error(
-        "Can't get access to the manager - you need to connect the module first!",
+        'You need to connect the module to a manager in order to get access to it!',
       );
     }
 
