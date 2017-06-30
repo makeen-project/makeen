@@ -78,6 +78,10 @@ class Module {
     this.manager.on(...args);
   }
 
+  once(...args) {
+    this.manager.once(...args);
+  }
+
   emit(event, ...args) {
     return this.manager.emit(
       `module:${this.name}:${event}`,
