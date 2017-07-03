@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/makeen-project/makeen.git"
+    "url": "https://github.com/makeen-project/makeen/tree/master/packages/makeen-cli"
   },
   "author": "Victor Zamfir <victor@makeen.io>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/makeen-project/makeen/issues"
   },
-  "homepage": "https://github.com/makeen-project/makeen#readme",
+  "url": "https://github.com/makeen-project/makeen/tree/master/packages/makeen-cli/readme.md",
   "dependencies": {
     "babel-core": "~6.23.1",
     "chokidar": "1.6.1",
