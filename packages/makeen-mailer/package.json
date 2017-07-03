@@ -1,6 +1,6 @@
 {
   "name": "makeen-mailer",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Makeen module providing email services: sending emails using nodemailer, saving emails on disk and much more",
   "main": "build/index.js",
   "repository": {
@@ -17,10 +17,10 @@
     "express": "4.15.3",
     "fs-extra": "^3.0.1",
     "joi": "10.5.1",
-    "makeen": "*",
+    "makeen": "^1.0.0",
     "nodemailer": "4.0.1",
-    "prop-types": "^15.5.10",
     "octobus.js": "0.31.1",
+    "prop-types": "^15.5.10",
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "serve-index": "1.9.0"

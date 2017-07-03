@@ -1,6 +1,6 @@
 {
   "name": "makeen-user",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Makeen user module providing authentication, authorization, users and accounts management.",
   "main": "build/index.js",
   "repository": {
@@ -19,18 +19,18 @@
     "celebrate": "4.0.1",
     "express": "4.15.3",
     "express-jwt": "5.3.0",
-    "lodash": "4.17.4",
     "joi": "10.5.1",
     "jsonwebtoken": "7.4.1",
-    "makeen": "*",
-    "makeen-router": "*",
-    "makeen-storage": "*",
+    "lodash": "4.17.4",
+    "makeen": "^1.0.0",
+    "makeen-router": "^1.0.0",
+    "makeen-storage": "^1.0.0",
     "moment": "2.18.1",
     "mongodb": "2.2.27",
+    "octobus.js": "0.31.1",
     "passport": "0.3.2",
     "passport-jwt": "^2.2.1",
     "passport-local": "1.0.0",
-    "octobus.js": "0.31.1",
     "prop-types": "^15.5.10",
     "react": "15.5.4"
   }
