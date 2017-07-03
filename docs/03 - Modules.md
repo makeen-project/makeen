@@ -78,3 +78,86 @@ app.listen(3000).then(() => {
   console.log('application started...');
 });
 ```
+
+Commands and hooks
+-------
+A module can run a command, which is a function that will run through the entire list of modules, skipping the ones defining the their own implementation (called a hook).
+It's one of those concepts better explained with an example, so let's see an example of a command that will collect the names of the existing modules:
+
+```js
+import { ModulesManager, Module } from 'makeen';
+
+const modules = new ModulesManager();
+const module1 = new Module({ name: 'one' });
+const module2 = new Module({ name: 'two' });
+let names;
+
+class NamesCollector extends Module {
+  async setup() {
+    names = await this.manager.run('collectNames', module => module.name);
+  }
+}
+
+modules.add([module1, module2, new NamesCollector()]);
+
+modules.setup().then(() => {
+  console.log(names);
+});
+```
+
+We're creating a new instance of a ModulesManager and adding two dummy modules. The NamesCollector module defines a setup function and in here we're going to call a command.
+The signature of a command is this:
+
+```js
+const returnValue = this.manager.run(commandName, command, context);
+```
+
+- commandName - is a string and the name is important, mainly because other modules will be able to define their own logic associated with the command name; examples of command names: `router:load`, `graphQL:buildContext`
+- command - is a function that will be called once per module receiving as the first argument the module in cause and the context as the 2nd argument; here you have the chance to introspect a module and extract data or call methods on it
+- context - can be any data type
+- returnValue - is a promise that will be resolved once the command is done processing; if ran successfully, the resolve value of the promise is going to be an array of values (one item per module).
+
+Commands are great when used in conjunction with hooks.
+To show an example of that, let's say module1 is a bit paranoid, and he doesn't want to tell us his name.
+
+```js
+import { ModulesManager, Module } from 'makeen';
+
+const modules = new ModulesManager();
+const module2 = new Module({ name: 'two' });
+let names;
+
+class Module1 extends Module {
+  name = 'one'
+  hooks = {
+    collectNames: () => 'I won\'t tell you!',
+  }
+}
+
+class NamesCollector extends Module {
+  async setup() {
+    names = await this.manager.run('collectNames', module => module.name);
+  }
+}
+
+modules.add([new Module1(), module2, new NamesCollector()]);
+
+modules.setup().then(() => {
+  console.log(names);
+});
+```
+
+We can see that even though its name is "one", we get something else, and that's because the module defined a hook with the same name as our command.
+
+It's good to know that you can define "before" and "after" hooks like this:
+
+```js
+class Module1 extends Module {
+  name = 'one'
+  hooks = {
+    'before:collectNames': () => console.log('Why do you need to know my name?'),
+    collectNames: () => 'I won\'t tell you!',
+    'after:collectNames': () => console.log('I lied to you.'),
+  }
+}
+```
