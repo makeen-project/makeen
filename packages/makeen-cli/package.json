@@ -1,6 +1,6 @@
 {
   "name": "makeen-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Makeen command line utilities.",
   "main": "build/index.js",
   "scripts": {},
