@@ -35,6 +35,8 @@ class LoggerModule extends Module {
       ],
     });
 
+    process.on('unhandledRejection', reason => logger.error(reason));
+
     this.export({ log: logger });
 
     if (printModules) {

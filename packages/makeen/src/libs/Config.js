@@ -8,7 +8,12 @@ const protect = () => {
 };
 
 const store = {};
-const get = (key, defaultValue) => _.get(store, key, defaultValue);
+const get = (key, defaultValue) => {
+  if (!key) {
+    return store;
+  }
+  return _.get(store, key, defaultValue);
+};
 const set = (key, value) => {
   protect();
   _.set(store, key, value);

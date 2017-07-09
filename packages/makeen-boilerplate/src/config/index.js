@@ -1,22 +1,25 @@
 import path from 'path';
-import { Config } from 'makeen';
+import { Config, helpers } from 'makeen';
+import randomstring from 'randomstring';
 
-const isDev = process.env.NODE_ENV === 'development';
+const rootDir = path.resolve(__dirname, '../../');
+const jwtSecret = randomstring.generate();
 
 Config.merge({
-  isDev,
-  port: process.env.PORT || 3000,
+  rootDir,
+  isDev: true,
+  port: 3000,
   sentry: {
-    dsn: process.env.SENTRY_DSN,
+    dsn: '',
   },
   secrets: {
-    jwt: process.env.JWT_SECRET,
+    jwt: jwtSecret,
   },
   paths: {
-    web: path.resolve(__dirname, '../../web'),
+    web: path.resolve(rootDir, './web'),
   },
   session: {
-    secret: process.env.SESSION_SECRET,
+    secret: '',
     name: 'sessionId',
     resave: false,
     saveUninitialized: false,
@@ -34,7 +37,7 @@ Config.merge({
       },
     },
     user: {
-      jwtSecret: process.env.JWT_SECRET,
+      jwtSecret,
       jwtConfig: {
         expiresIn: '1d',
       },
@@ -55,14 +58,14 @@ Config.merge({
         jsonTransport: true,
       },
       saveToDisk: true,
-      emailsDir: path.resolve(__dirname, '../../emails'),
-      templatesDir: path.resolve(__dirname, '../modules/mailer/templates'),
+      emailsDir: path.resolve(rootDir, './emails'),
+      templatesDir: path.resolve(rootDir, './build/modules/mailer/templates'),
       middlewarePivot: {
         before: 'isMethod',
       },
     },
     fileStorage: {
-      uploadDir: path.resolve(__dirname, '../../uploads'),
+      uploadDir: path.resolve(rootDir, './uploads'),
     },
     gql: {
       graphiql: {
@@ -75,9 +78,12 @@ Config.merge({
       },
     },
     logger: {
-      logsDir: path.resolve(__dirname, '../../logs'),
+      logsDir: path.resolve(rootDir, './logs'),
     },
   },
+  test: [{ first: 'yep' }],
 });
+
+Config.merge(helpers.loadFromENV('MAKEEN_CONFIG', Config.get()));
 
 export default Config;
