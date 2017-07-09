@@ -6,7 +6,6 @@ export default {
   Mutation: {},
   Query: {
     hello: () => 'Makeen it!',
-    octobusMessages: (_, args, { app }) => app.messageStore.find(args),
     modules: (_, { name }, { app }) => {
       const { dependencyGraph } = app.modules;
       if (name) {
@@ -15,10 +14,6 @@ export default {
 
       return Object.keys(dependencyGraph).map(module => ({ name: module }));
     },
-  },
-  OctobusMessage: {
-    children: (message, args, { app }) =>
-      app.messageStore.findChildren(message.id, args),
   },
   Module: {
     dependencies: ({ name }, args, { app }) =>

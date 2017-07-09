@@ -1,21 +1,10 @@
 type Query {
   hello: String
-  octobusMessages(topic: String): [OctobusMessage]
   modules(name: String): [Module]
 }
 
 type Mutation {
   ping: String
-}
-
-type OctobusMessage {
-  id: ID!
-  topic: String!
-  data: String
-  parentId: ID!
-  parent: OctobusMessage
-  timestamp: Float
-  children: [OctobusMessage]
 }
 
 type Module {

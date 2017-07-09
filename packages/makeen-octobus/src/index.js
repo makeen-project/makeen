@@ -42,7 +42,12 @@ class Octobus extends Module {
   }
 
   async setup() {
-    const { createServiceBus, registerServices, messageBus } = this;
+    const {
+      createServiceBus,
+      registerServices,
+      messageBus,
+      messageStore,
+    } = this;
 
     await this.manager.run('octobus:createServiceBus', () => {}, {
       create: createServiceBus,
@@ -61,6 +66,7 @@ class Octobus extends Module {
     );
 
     this.export({
+      messageStore,
       messageBus,
       createServiceBus,
       registerServices,

@@ -127,7 +127,7 @@ class Gql extends Module {
         typeDefs: this.typeDefs,
         resolvers,
         logger: {
-          log: err => this.app.logger.error(err),
+          log: err => this.app.modules.get('logger').log.error(err),
         },
         allowUndefinedInResolve: false,
       }),
