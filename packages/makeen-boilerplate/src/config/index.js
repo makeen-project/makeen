@@ -82,7 +82,6 @@ Config.merge({
       logsDir: path.resolve(rootDir, './logs'),
     },
   },
-  test: [{ first: 'yep' }],
 });
 
 Config.merge(helpers.loadFromENV('MAKEEN_CONFIG', Config.get()));
