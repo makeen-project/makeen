@@ -44,6 +44,7 @@ Config.merge({
       mockUserMiddlewarePivot: {
         before: 'isMethod',
       },
+      passportMiddlewarePivot: 'cookieParser',
       mockUserConfig: {
         enabled: true,
         path: '/graphql',

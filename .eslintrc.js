@@ -24,6 +24,7 @@ module.exports = {
       'makeen-router',
       'makeen-storage',
       'makeen-user',
+      'makeen-security',
     ],
   },
 };
