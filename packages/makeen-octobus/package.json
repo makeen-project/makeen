@@ -1,6 +1,6 @@
 {
   "name": "makeen-octobus",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Makeen octobus integration",
   "main": "build/index.js",
   "repository": {
@@ -17,7 +17,7 @@
     "axios": "0.16.2",
     "express": "4.15.3",
     "lodash": "4.17.4",
-    "makeen": "^1.0.3",
+    "makeen": "^1.0.4",
     "octobus.js": "0.31.1"
   }
 }
