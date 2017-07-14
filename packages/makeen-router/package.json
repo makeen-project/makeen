@@ -1,6 +1,6 @@
 {
   "name": "makeen-router",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Makeen module that helps you register routers provided by other modules",
   "main": "build/index.js",
   "repository": {
@@ -19,7 +19,7 @@
     "express": "4.15.3",
     "joi": "10.2.2",
     "lodash": "^4.11.1",
-    "makeen": "^1.0.4",
+    "makeen": "^1.2.0",
     "mongodb": "2.2.24",
     "mongodb-extended-json": "1.9.0",
     "octobus.js": "0.31.0"
