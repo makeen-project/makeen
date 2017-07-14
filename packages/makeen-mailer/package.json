@@ -1,6 +1,6 @@
 {
   "name": "makeen-mailer",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Makeen module providing email services: sending emails using nodemailer, saving emails on disk and much more",
   "main": "build/index.js",
   "repository": {

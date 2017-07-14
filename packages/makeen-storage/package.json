@@ -1,6 +1,6 @@
 {
   "name": "makeen-storage",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Makeen database storage module providing MongoDB integration.",
   "main": "build/index.js",
   "repository": {
