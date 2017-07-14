@@ -32,33 +32,56 @@ class User extends Module {
         enabled: false,
       }),
   };
+  hooks = {
+    'router:load': ({ addRouter }) => {
+      this.addRouter = addRouter;
+    },
+  };
 
   initialize({ jwtSecret }) {
     this.jwtMiddleware = jwtMiddleware({
       secret: jwtSecret,
     });
+  }
 
-    this.router = router({
-      jwtMiddleware,
-    });
+  configurePassport(routerConfig) {
+    const {
+      passportConfig,
+      passportMiddlewarePivot,
+      jwtSecret,
+    } = this.getConfig();
+
+    if (!passportConfig.enabled) {
+      return;
+    }
+
+    const passport = passportFactory({ jwtSecret });
+    this.app.middlewares.insert(
+      passportMiddlewarePivot,
+      passportInitialize,
+      passportSession,
+    );
+    this.export({ passport });
+    Object.assign(routerConfig, { passport });
   }
 
   async setup({
     jwtSecret,
     jwtConfig,
-    passportConfig,
-    passportMiddlewarePivot,
     mockUserMiddlewarePivot,
     mockUserConfig,
   }) {
-    const exportMap = {};
     const [
       { createRepository },
       { createServiceBus },
     ] = await this.dependencies(['storage', 'octobus']);
+    const routerConfig = {
+      jwtMiddleware: this.jwtMiddleware,
+    };
+
     this.serviceBus = createServiceBus(this.name, [{ matcher: /^mailer/ }]);
 
-    Object.assign(exportMap, {
+    this.export({
       ...this.serviceBus.registerServices({
         User: new UserService({
           jwtConfig: {
@@ -75,17 +98,7 @@ class User extends Module {
       jwtMiddleware: this.jwtMiddleware,
     });
 
-    if (passportConfig.enabled) {
-      const passport = passportFactory({ jwtSecret });
-      this.app.middlewares.insert(
-        passportMiddlewarePivot,
-        passportInitialize,
-        passportSession,
-      );
-      Object.assign(exportMap, {
-        passport,
-      });
-    }
+    this.configurePassport(routerConfig);
 
     if (mockUserConfig.enabled) {
       this.app.middlewares.insert(mockUserMiddlewarePivot, {
@@ -94,7 +107,7 @@ class User extends Module {
       });
     }
 
-    this.export(exportMap);
+    this.addRouter('userRouter', router(routerConfig));
   }
 }
 

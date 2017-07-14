@@ -15,15 +15,14 @@ export default ({ jwtSecret }) => {
         passReqToCallback: true,
       },
       async (req, id, done) => {
+        const { UserRepository, AccountRepository, User } = req.app.modules.get(
+          'user',
+        );
         try {
-          const user = await req.app.modules
-            .get('user')
-            .UserRepository.findById(objectId(id));
-          const account = await req.app.modules
-            .get('user')
-            .AccountRepository.findById(user.accountId);
+          const user = await UserRepository.findById(objectId(id));
+          const account = await AccountRepository.findById(user.accountId);
 
-          const canLogin = await req.app.modules.get('user').User.canLogin({
+          const canLogin = await User.canLogin({
             user,
             account,
           });

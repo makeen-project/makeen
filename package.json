@@ -8,7 +8,7 @@
   "scripts": {
     "postinstall": "yarn run bootstrap",
     "bootstrap": "lerna bootstrap",
-    "clean-modules": "rm -rf node_modules/ && rm -rf packages/*/node_modules && rm -rf yarn.lock && rm -rf packages/*/yarn.lock && rm -rf packages/*/build",
+    "clean-modules": "rm -rf node_modules/ && rm -rf packages/*/node_modules && rm -rf packages/*/build",
     "clean-setup": "yarn run clean-modules && yarn",
     "debug": "babel-node --inspect src/index.js",
     "babel-node": "babel-node",
