@@ -16,14 +16,18 @@ class Router extends Module {
     this.loadModuleRouter = this.loadModuleRouter.bind(this);
   }
 
-  addRouter(id, router, middlewarePivot) {
-    this.app.middlewares.insert(
-      middlewarePivot || this.getConfig('middlewarePivot'),
-      {
-        id,
-        factory: () => router,
-      },
-    );
+  addRouter(...args) {
+    if (args.length === 2) {
+      args.unshift('/');
+    }
+
+    const [pathPrefix, id, router] = args;
+
+    this.app.middlewares.insert(this.getConfig('middlewarePivot'), {
+      path: pathPrefix,
+      id,
+      factory: () => router,
+    });
   }
 
   loadModuleRouter(module) {

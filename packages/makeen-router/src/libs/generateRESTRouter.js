@@ -63,7 +63,7 @@ export default ({
           params.limit = parseInt(req.query.limit, 10);
         }
 
-        return repository.findMany(params).then(c => c.toArray());
+        return repository.findMany(params).toArray();
       }),
     )
     .post(
