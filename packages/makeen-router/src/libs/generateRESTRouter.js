@@ -13,7 +13,6 @@ import {
 export default ({
   router = Router(),
   repository,
-  entitySchema = {},
   idValidator = mongoIdValidator,
 }) => {
   router.param('id', async (req, res, next, rawId) => {
@@ -68,9 +67,6 @@ export default ({
       }),
     )
     .post(
-      celebrate({
-        body: entitySchema,
-      }),
       wrapHandler(req => {
         repository.createOne(toBSON(req.body));
       }),
