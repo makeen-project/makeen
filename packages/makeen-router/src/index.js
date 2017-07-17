@@ -3,6 +3,7 @@ import { Module } from 'makeen';
 import path from 'path';
 import BaseRouter from './libs/Router';
 import * as helpers from './libs/helpers';
+import generatRESTRouter from './libs/generatRESTRouter';
 
 class Router extends Module {
   static configSchema = {
@@ -44,6 +45,10 @@ class Router extends Module {
   async setup() {
     await this.manager.run('router:load', this.loadModuleRouter, {
       addRouter: this.addRouter,
+    });
+
+    this.export({
+      generatRESTRouter,
     });
   }
 }

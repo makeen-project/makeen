@@ -13,7 +13,7 @@ import {
 export default ({
   router = Router(),
   repository,
-  entitySchema,
+  entitySchema = {},
   idValidator = mongoIdValidator,
 }) => {
   router.param('id', async (req, res, next, rawId) => {
