@@ -66,11 +66,7 @@ export default ({
         return repository.findMany(params).toArray();
       }),
     )
-    .post(
-      wrapHandler(req => {
-        repository.createOne(toBSON(req.body));
-      }),
-    );
+    .post(wrapHandler(req => repository.createOne(toBSON(req.body))));
 
   router.get(
     '/count',
