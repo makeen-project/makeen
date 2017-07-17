@@ -6,5 +6,6 @@ export default {
   OctobusMessage: {
     children: (message, args, { app }) =>
       app.modules.get('octobus').messageStore.findChildren(message.id, args),
+    data: message => JSON.stringify(message.data),
   },
 };
