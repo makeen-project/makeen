@@ -1,6 +1,6 @@
 {
   "name": "makeen-octobus",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Makeen octobus integration",
   "main": "build/index.js",
   "repository": {
