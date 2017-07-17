@@ -3,7 +3,7 @@ import { Module } from 'makeen';
 import path from 'path';
 import BaseRouter from './libs/Router';
 import * as helpers from './libs/helpers';
-import generatRESTRouter from './libs/generatRESTRouter';
+import generateRESTRouter from './libs/generateRESTRouter';
 
 class Router extends Module {
   static configSchema = {
@@ -48,7 +48,7 @@ class Router extends Module {
     });
 
     this.export({
-      generatRESTRouter,
+      generateRESTRouter,
     });
   }
 }
