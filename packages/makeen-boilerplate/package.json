@@ -1,7 +1,7 @@
 {
   "name": "makeen-boilerplate",
   "private": "true",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "engines": {
     "node": "7.x.x"
   },
@@ -39,15 +39,15 @@
     "joi": "10.5.1",
     "lodash": "4.17.4",
     "makeen": "^1.2.0",
-    "makeen-file-storage": "^1.2.0",
+    "makeen-file-storage": "^1.2.1",
     "makeen-graphql": "^1.2.0",
     "makeen-health": "^1.2.0",
     "makeen-logger": "^1.2.0",
     "makeen-mailer": "^1.2.0",
-    "makeen-octobus": "^1.2.2",
-    "makeen-router": "^1.2.0",
+    "makeen-octobus": "^1.2.3",
+    "makeen-router": "^1.2.1",
     "makeen-storage": "^1.2.0",
-    "makeen-user": "^1.2.0",
+    "makeen-user": "^1.2.1",
     "moment": "2.18.1",
     "mongodb": "2.2.27",
     "mongodb-migrate": "2.0.2",

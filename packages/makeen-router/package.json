@@ -1,6 +1,6 @@
 {
   "name": "makeen-router",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Makeen module that helps you register routers provided by other modules",
   "main": "build/index.js",
   "repository": {
