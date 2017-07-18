@@ -18,8 +18,11 @@ class Play extends Module {
     this.addRouter('playRouter', router({ jwtMiddleware }));
 
     const ProductRepository = createRepository('Product', {
+      _id: Joi.object(),
       name: Joi.string().required(),
       price: Joi.number().required(),
+      createdAt: Joi.date(),
+      updatedAt: Joi.date(),
     });
 
     const productRouter = generateRESTRouter({

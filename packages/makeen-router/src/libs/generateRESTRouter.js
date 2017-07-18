@@ -91,11 +91,13 @@ export default ({
   router
     .route('/:id')
     .get((req, res) => res.json(req.entity))
-    .put(req =>
-      repository.replaceOne({
-        ...req.entity,
-        ...toBSON(req.body),
-      }),
+    .put(
+      wrapHandler(req =>
+        repository.replaceOne({
+          ...req.entity,
+          ...toBSON(req.body),
+        }),
+      ),
     )
     .patch(
       wrapHandler(async req => {
@@ -113,6 +115,11 @@ export default ({
           },
         });
       }),
+    )
+    .delete(
+      wrapHandler(req =>
+        repository.deleteOne({ query: { _id: req.entity._id } }),
+      ),
     );
 
   router.get(
