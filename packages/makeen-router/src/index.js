@@ -47,12 +47,15 @@ class Router extends Module {
   }
 
   async setup() {
+    const { addRouter } = this;
+
     await this.manager.run('router:load', this.loadModuleRouter, {
-      addRouter: this.addRouter,
+      addRouter,
     });
 
     this.export({
       generateRESTRouter,
+      addRouter,
     });
   }
 }
