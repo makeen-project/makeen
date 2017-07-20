@@ -8,7 +8,7 @@ Config.set('someKey', someValue);
 export default Config;
 ```
 
-Because it uses the lodash set / get / has methods, dealing with nested keys is a bit easier.
+Because it uses the lodash set / get / has methods, dealing with nested keys is easy.
 
 ```js
 Config.set('session', {
