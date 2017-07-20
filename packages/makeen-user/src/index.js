@@ -32,11 +32,6 @@ class User extends Module {
         enabled: false,
       }),
   };
-  hooks = {
-    'router:load': ({ addRouter }) => {
-      this.addRouter = addRouter;
-    },
-  };
 
   initialize({ jwtSecret }) {
     this.jwtMiddleware = jwtMiddleware({
@@ -74,7 +69,8 @@ class User extends Module {
     const [
       { createRepository },
       { createServiceBus },
-    ] = await this.dependencies(['storage', 'octobus']);
+      { addRouter },
+    ] = await this.dependencies(['storage', 'octobus', 'router']);
     const routerConfig = {
       jwtMiddleware: this.jwtMiddleware,
     };
@@ -107,7 +103,7 @@ class User extends Module {
       });
     }
 
-    this.addRouter('userRouter', router(routerConfig));
+    addRouter('userRouter', router(routerConfig));
   }
 }
 

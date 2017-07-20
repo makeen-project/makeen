@@ -13,6 +13,7 @@ import isMethod from './isMethod';
 import cors from './cors';
 import errorHandler from './errorHandler';
 import cookieParser from './cookieParser';
+import joiErrorHandler from './joiErrorHandler';
 
 export {
   bodyParserJSON,
@@ -30,4 +31,5 @@ export {
   cors,
   errorHandler,
   cookieParser,
+  joiErrorHandler,
 };

@@ -3,19 +3,14 @@ import { Module } from 'makeen';
 import router from './router';
 
 class Play extends Module {
-  hooks = {
-    'router:load': ({ addRouter }) => {
-      this.addRouter = addRouter;
-    },
-  };
-
   async setup() {
     const [
       { jwtMiddleware },
-      { generateRESTRouter },
+      { generateRESTRouter, addRouter },
       { createRepository },
     ] = await this.dependencies(['user', 'router', 'storage']);
-    this.addRouter('playRouter', router({ jwtMiddleware }));
+
+    addRouter('playRouter', router({ jwtMiddleware }));
 
     const ProductRepository = createRepository('Product', {
       _id: Joi.object(),
@@ -29,7 +24,7 @@ class Play extends Module {
       repository: ProductRepository,
     });
 
-    this.addRouter('/products', 'productRouter', productRouter);
+    addRouter('/products', 'productRouter', productRouter);
   }
 }
 
