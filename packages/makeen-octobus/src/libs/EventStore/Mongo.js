@@ -4,6 +4,10 @@ class MongoStore {
     this.collectionName = collectionName;
   }
 
+  setMessageBus(messageBus) {
+    messageBus.onMessage(msg => this.save(msg));
+  }
+
   save(msg) {
     this.db.collection(this.collectionName).insertOne({
       ...msg,

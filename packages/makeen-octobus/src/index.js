@@ -2,11 +2,20 @@ import Joi from 'joi';
 import { Module } from 'makeen';
 import MessageBus from './libs/MessageBus';
 import ServiceBus from './libs/ServiceBus';
-import MemoryStore from './libs/EventStore/Memory';
+import NullStore from './libs/EventStore/Null';
 
 class Octobus extends Module {
   static configSchema = {
-    logMessages: Joi.boolean().default(false),
+    messageBus: Joi.object().default(
+      ({ messageBusOptions }) =>
+        new MessageBus(MessageBus.createDefaultRouter(), messageBusOptions),
+      'MessageBus instance',
+    ),
+    messageBusOptions: Joi.object().default({}),
+    messageStore: Joi.object().default(
+      () => new NullStore(),
+      'MessageStore instance',
+    ),
   };
 
   constructor(...args) {
@@ -15,11 +24,10 @@ class Octobus extends Module {
     this.registerServices = this.registerServices.bind(this);
   }
 
-  initialize() {
-    this.messageBus = new MessageBus();
-
-    this.messageStore = new MemoryStore();
-    this.messageBus.onMessage(msg => this.messageStore.save(msg));
+  initialize({ messageBus, messageStore }) {
+    this.messageBus = messageBus;
+    this.messageStore = messageStore;
+    this.messageStore.setMessageBus(this.messageBus);
     this.serviceBus = this.createServiceBus('main');
   }
 
@@ -42,20 +50,13 @@ class Octobus extends Module {
     return module.serviceBus.registerServices(serviceMap);
   }
 
-  async setup({ logMessages }) {
+  async setup() {
     const {
       createServiceBus,
       registerServices,
       messageBus,
       messageStore,
     } = this;
-
-    if (logMessages) {
-      const { log } = await this.dependency('logger');
-      messageBus.onMessage(msg => {
-        log.info(JSON.stringify(msg, null, 2)); // eslint-disable-line
-      });
-    }
 
     await this.manager.run('octobus:createServiceBus', () => {}, {
       create: createServiceBus,
