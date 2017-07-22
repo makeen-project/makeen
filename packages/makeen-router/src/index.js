@@ -33,6 +33,8 @@ class Router extends Module {
 
   loadModuleRouter(module) {
     let router = module.router;
+    const routesPrefix =
+      module.routesPrefix || module.getConfig('routesPrefix') || '/';
 
     if (!router) {
       const routerPath = path.resolve(path.dirname(module.filePath), 'router');
@@ -43,7 +45,7 @@ class Router extends Module {
     }
 
     if (router) {
-      this.addRouter(`${module.name}Router`, router);
+      this.addRouter(routesPrefix, `${module.name}Router`, router);
     }
   }
 
