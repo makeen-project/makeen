@@ -3,6 +3,10 @@ import { Module } from 'makeen';
 import router from './router';
 
 class Play extends Module {
+  hooks = {
+    'router:load': () => {},
+  };
+
   async setup() {
     const [
       { jwtMiddleware },

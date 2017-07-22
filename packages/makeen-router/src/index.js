@@ -8,6 +8,7 @@ import generateRESTRouter from './libs/generateRESTRouter';
 class Router extends Module {
   static configSchema = {
     middlewarePivot: Joi.any().required(),
+    autoload: Joi.boolean().default(true),
   };
 
   constructor(...args) {
@@ -46,12 +47,14 @@ class Router extends Module {
     }
   }
 
-  async setup() {
+  async setup({ autoload }) {
     const { addRouter } = this;
 
-    await this.manager.run('router:load', this.loadModuleRouter, {
-      addRouter,
-    });
+    if (autoload) {
+      await this.manager.run('router:load', this.loadModuleRouter, {
+        addRouter,
+      });
+    }
 
     this.export({
       generateRESTRouter,

@@ -33,6 +33,10 @@ class User extends Module {
       }),
   };
 
+  hooks = {
+    'router:load': () => {},
+  };
+
   initialize({ jwtSecret }) {
     this.jwtMiddleware = jwtMiddleware({
       secret: jwtSecret,
