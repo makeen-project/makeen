@@ -3,8 +3,10 @@ import { Router } from 'express';
 import celebrate from 'celebrate';
 import { helpers } from 'makeen-router';
 import pick from 'lodash/pick';
+import Boom from 'boom';
 import userSchema from '../schemas/user';
 import { sanitizeUserData } from '../libs/helpers';
+import { FailedLogin } from '../libs/errors';
 
 const { wrapHandler } = helpers;
 
@@ -18,7 +20,16 @@ export default ({ jwtMiddleware }) => {
     }),
     wrapHandler(async (req, res) => {
       const { User, UserLoginRepository } = req.app.modules.get('user');
-      const result = await User.login(req.body);
+      let result;
+      try {
+        result = await User.login(req.body);
+      } catch (err) {
+        if (err instanceof FailedLogin) {
+          throw Boom.badRequest(err.message);
+        }
+
+        throw err;
+      }
 
       await UserLoginRepository.createOne({
         userId: result._id,

@@ -7,6 +7,7 @@ import bcrypt from 'bcryptjs';
 import moment from 'moment';
 import { decorators, ServiceContainer } from 'octobus.js';
 import crypto from 'crypto';
+import Boom from 'boom';
 import ForgotPasswordTemplaate from '../mailerTemplates/ForgotPassword';
 import UserSignupTemplate from '../mailerTemplates/UserSignup';
 import { FailedLogin } from '../libs/errors';
@@ -171,7 +172,7 @@ class User extends ServiceContainer {
     const user = await this.UserRepository.findById(userId);
 
     if (!user) {
-      throw new Error('User not found!');
+      throw Boom.badRequest('User not found!');
     }
 
     const oldHashedPassword = await this.hashPassword({
@@ -180,7 +181,7 @@ class User extends ServiceContainer {
     });
 
     if (oldHashedPassword !== user.password) {
-      throw new Error('Invalid password!');
+      throw Boom.badRequest('Invalid password!');
     }
 
     const hashedPassword = await this.hashPassword({
@@ -189,7 +190,7 @@ class User extends ServiceContainer {
     });
 
     if (hashedPassword === user.password) {
-      throw new Error("You can't use the same password!");
+      throw Boom.badRequest("You can't use the same password!");
     }
 
     return this.UserRepository.updateOne({
@@ -216,7 +217,7 @@ class User extends ServiceContainer {
     });
 
     if (!user) {
-      throw new Error('Token not found!');
+      throw Boom.badRequest('Token not found!');
     }
 
     const hashedPassword = await this.hashPassword({
@@ -225,7 +226,7 @@ class User extends ServiceContainer {
     });
 
     if (hashedPassword === user.password) {
-      throw new Error("You can't use the same password!");
+      throw Boom.badRequest("You can't use the same password!");
     }
 
     const updateResult = await this.UserRepository.updateOne({
@@ -261,11 +262,11 @@ class User extends ServiceContainer {
 
     if (existingUser) {
       if (existingUser.username === username) {
-        throw new Error('Username already taken.');
+        throw Boom.badRequest('Username already taken.');
       }
 
       if (existingUser.email === email) {
-        throw new Error('Email already taken.');
+        throw Boom.badRequest('Email already taken.');
       }
     }
 
@@ -320,7 +321,7 @@ class User extends ServiceContainer {
     });
 
     if (!user) {
-      throw new Error('User not found!');
+      throw Boom.badRequest('User not found!');
     }
 
     const resetPassword = {
@@ -376,7 +377,7 @@ class User extends ServiceContainer {
     });
 
     if (!user) {
-      throw new Error('User not found!');
+      throw Boom.badRequest('User not found!');
     }
 
     user.socialLogin[provider] = {
