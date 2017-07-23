@@ -50,8 +50,6 @@ export default [
     enabled: true,
   },
   middlewares.isMethod,
-  middlewares.joiErrorHandler,
-  middlewares.celebrateErrors,
   {
     ...middlewares.sentryErrorHandler,
     enabled: !Config.get('isDev'),
