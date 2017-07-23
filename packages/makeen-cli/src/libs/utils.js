@@ -75,8 +75,8 @@ export const makeConfig = (config = {}) => {
   };
 
   try {
-    const makeenConfig = require(`${process.cwd()}/makeen.config.js`).default; // eslint-disable-line
-    Object.assign(finalConfig, makeenConfig);
+    const makeenConfig = require(`${process.cwd()}/makeen.config.js`); // eslint-disable-line
+    Object.assign(finalConfig, makeenConfig.default || makeenConfig);
   } catch (err) {
     console.log('Unable to locate a makeen.config.js file.'); // eslint-disable-line no-console
   }
