@@ -1,7 +1,7 @@
 {
   "name": "makeen-boilerplate",
   "private": "true",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "engines": {
     "node": "7.x.x"
   },
@@ -47,7 +47,7 @@
     "makeen-octobus": "^1.4.0",
     "makeen-router": "^1.3.0",
     "makeen-storage": "^1.2.0",
-    "makeen-user": "^1.4.0",
+    "makeen-user": "^1.4.1",
     "moment": "2.18.1",
     "mongodb": "2.2.27",
     "mongodb-migrate": "2.0.2",
