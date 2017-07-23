@@ -7,7 +7,7 @@ const jwtSecret = randomstring.generate();
 
 Config.merge({
   rootDir,
-  isDev: true,
+  isDev: process.env.NODE_ENV === 'development',
   port: 3000,
   sentry: {
     dsn: '',
