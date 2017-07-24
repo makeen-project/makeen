@@ -1,46 +1,42 @@
 import get from 'lodash/get';
 import { Module } from 'makeen';
-import RolesManager from './libs/RolesManager';
-import PermissionsTree from './libs/PermissionsTree';
+import AbilityManager from './libs/AbilityManager';
 
 class Security extends Module {
   static configSchema = {};
 
+  initialize() {
+    this.abilities = new AbilityManager({
+      extractor: user => [
+        ...(user.abilities || []),
+        ...user.roles.reduce(
+          (acc, role) => [...acc, ...(role.abilities || [])],
+          [],
+        ),
+      ],
+    });
+  }
+
   async setup() {
-    const roles = new RolesManager();
-    const permissions = new PermissionsTree();
+    const { abilities } = this;
 
     await this.manager.run(
-      'roles:configure',
+      'abilities:define',
       module => {
-        const moduleRoles = get(module, 'security.roles');
-        if (moduleRoles) {
-          Object.keys(moduleRoles).forEach(role => {
-            roles.add(role, moduleRoles[role]);
+        const moduleAbilities = get(module, 'security.abilities');
+        if (moduleAbilities) {
+          Object.keys(moduleAbilities).forEach(ability => {
+            abilities.define(ability, moduleAbilities[ability]);
           });
         }
       },
       {
-        roles,
-      },
-    );
-
-    await this.manager.run(
-      'permissions:configure',
-      module => {
-        const modulePermissions = get(module, 'security.permissions');
-        if (modulePermissions) {
-          permissions.add(modulePermissions);
-        }
-      },
-      {
-        permissions,
+        abilities,
       },
     );
 
     this.export({
-      roles,
-      permissions,
+      abilities,
     });
   }
 }

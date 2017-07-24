@@ -46,6 +46,7 @@
     "makeen-mailer": "^1.2.0",
     "makeen-octobus": "^1.4.0",
     "makeen-router": "^1.3.0",
+    "makeen-security": "*",
     "makeen-storage": "^1.2.0",
     "makeen-user": "^1.4.1",
     "moment": "2.18.1",
