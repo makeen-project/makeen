@@ -54,6 +54,14 @@ export default [
     ...middlewares.sentryErrorHandler,
     enabled: !Config.get('isDev'),
   },
+  middlewares.joiErrorHandler,
+  {
+    ...middlewares.boomErrorHandler,
+    params: {
+      ...middlewares.boomErrorHandler.params,
+      isDev: Config.get('isDev'),
+    },
+  },
   {
     ...middlewares.errorHandler,
     params: {
