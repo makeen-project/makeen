@@ -57,6 +57,7 @@ export default [
   {
     ...middlewares.errorHandler,
     params: {
+      ...middlewares.errorHandler.params,
       isDev: Config.get('isDev'),
     },
   },

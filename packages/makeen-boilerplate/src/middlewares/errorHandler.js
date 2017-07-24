@@ -4,7 +4,7 @@ const errorHandler = errorHandlerFactory();
 
 export default {
   id: 'errorHandler',
-  factory: ({ isDev }) => (err, req, res, next) => {
+  factory: ({ isDev, handleError }) => (err, req, res, next) => {
     if (err.isJoi) {
       return res.status(400).send({
         statusCode: 400,
@@ -22,11 +22,14 @@ export default {
       return errorHandler(err, req, res, next);
     }
 
-    req.app.modules.get('logger.log').error(err);
+    handleError(err, req);
 
     res.status(500);
     return res.json({
       message: 'Internal server error!',
     });
+  },
+  params: {
+    handleError: (err, req) => req.app.modules.get('logger.log').error(err),
   },
 };
