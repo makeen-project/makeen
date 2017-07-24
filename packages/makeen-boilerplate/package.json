@@ -1,6 +1,6 @@
 {
   "name": "makeen-boilerplate",
-  "private": "true",
+  "private": true,
   "version": "1.4.1",
   "engines": {
     "node": "7.x.x"
