@@ -16,6 +16,7 @@ A resource can be pretty much anything:
   - a function call
   - a business object
   - etc.
+
 Figuring out what are the things (resources) in the which require a restricted access will be an on-going process.
 
 ### 2. Applying restrictions to these resources.
