@@ -27,7 +27,7 @@
     "makeen-storage": "^1.2.0",
     "moment": "2.18.1",
     "mongodb": "2.2.27",
-    "octobus.js": "0.31.1",
+    "octobus.js": "1.1.2",
     "passport": "0.3.2",
     "passport-jwt": "^2.2.1",
     "passport-local": "1.0.0",

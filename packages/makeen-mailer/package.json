@@ -19,7 +19,7 @@
     "joi": "10.5.1",
     "makeen": "^1.2.0",
     "nodemailer": "4.0.1",
-    "octobus.js": "0.31.1",
+    "octobus.js": "1.1.2",
     "prop-types": "^15.5.10",
     "react": "15.5.4",
     "react-dom": "15.5.4",
