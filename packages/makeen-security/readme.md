@@ -1,11 +1,11 @@
 `makeen-security` provides a permissions-based authorization mechanism.
 
-If you're looking for a simpler but restricted system, and you know up-front what are the available groups of users and the access to resources is decided only by the presence to these groups where no logic is involved `makeen-user` alone is a solution for dealing with authorization.
+If you're looking for a simpler but restrictive system, and you know up-front what are the available groups of users and the access to resources is decided only by the presence of users in these groups and no logic is involved, `makeen-user` alone is a solution for dealing with authorization.
 
 You should use `makeen-security` if:
 - you intend to provide some administrative access to the groups (probably through a UI), where you want to add new groups, manage groups' permissions, organize users into groups;
 - you need more granularity over the way you assign permissions to users (sometimes you just want to assign some permissions to a specific user, without having to create a group for that)
-- you don't know up-front what are the groups of users (roles) of the system and you want to be able to let the admin manage that as he gets a better understanding of it; this way you just restrict access to some resources using the permissions, but you let the admin organize permissions into groups and assign users to groups;
+- you don't know up-front what are the groups of users (roles) of the system and you want to be able to let the admin manage that as he gets a better understanding of it; this way you just apply the restrictions to some resources using permissions, but you let the admin organize permissions into groups and assign users to groups;
 - you want visibility over what a user can do - you can just get the list of permissions assigned to it, which is a merge between directly assigned permissions and permissions related to the groups the user is a part of. The role-based system is opaque - you don't know what a role can do, unless properly documented.
 - you want to have logic involved in the decision making process; example: a user can add comments to a blog post, but he can only update them unless he's the creator of a comment and the comment hasn't been posted more than an hour ago.
 
