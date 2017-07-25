@@ -24,7 +24,9 @@ class Security extends ServiceContainer {
           userId,
         },
         update: {
-          permissions,
+          $set: {
+            permissions,
+          },
         },
       });
     } else {
@@ -43,7 +45,7 @@ class Security extends ServiceContainer {
   })
   async getUserPermissions({ userId }, { extract }) {
     const UserRepository = extract('UserRepository');
-    const GroupRepository = extract('UserRepository');
+    const GroupRepository = extract('GroupRepository');
     const user = await UserRepository.findOne({
       query: {
         userId,
@@ -71,10 +73,47 @@ class Security extends ServiceContainer {
   }
 
   @service()
-  setUserGroups() {}
+  @withSchema({
+    userId: Joi.object().required(),
+    groups: Joi.array().items(Joi.string()).required(),
+  })
+  async setUserGroups({ userId, groups }, { extract }) {
+    const UserRepository = extract('UserRepository');
+    const GroupRepository = extract('GroupRepository');
+    const user = await UserRepository.findOne({
+      query: {
+        userId,
+      },
+    });
+    const fetchedGroups = await GroupRepository.findMany({
+      query: {
+        name: {
+          $in: groups,
+        },
+      },
+    });
+    const groupIds = fetchedGroups.map(({ _id }) => _id);
 
-  @service()
-  getUserGroups() {}
+    if (user) {
+      await UserRepository.updateOne({
+        query: {
+          userId,
+        },
+        update: {
+          $set: {
+            groupIds,
+          },
+        },
+      });
+    } else {
+      await UserRepository.insertOne({
+        query: {
+          userId,
+          groupIds,
+        },
+      });
+    }
+  }
 }
 
 export default Security;
