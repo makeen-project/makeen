@@ -1,6 +1,7 @@
 import assert from 'assert';
 import Joi from 'joi';
 import flattenDeep from 'lodash/flattenDeep';
+import pick from 'lodash/pick';
 import NotAllowed from '../errors/NotAllowed';
 
 class PermissionsManager {
@@ -19,6 +20,22 @@ class PermissionsManager {
     };
     this.extractor = extractor;
     this.configure();
+  }
+
+  getAll() {
+    return Object.keys(this.permissions).reduce(
+      (acc, permission) => [
+        ...acc,
+        {
+          permission,
+          ...pick(this.permissions[permission], [
+            'description',
+            'dependencies',
+          ]),
+        },
+      ],
+      [],
+    );
   }
 
   // eslint-disable-next-line class-methods-use-this
