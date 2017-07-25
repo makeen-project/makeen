@@ -1,9 +1,9 @@
 import Boom from 'boom';
 
 export default (
-  abilityName,
+  permissionName,
   options = {
-    getSubject: req => req.user,
+    getSubject: req => req.user || {},
     getObject: () => {},
   },
 ) => async (req, res, next) => {
@@ -13,10 +13,10 @@ export default (
   try {
     const isAllowed = await req.app.modules
       .get('security')
-      .abilities.can(subject, abilityName, object);
+      .permissions.can(subject, permissionName, object);
 
     if (!isAllowed) {
-      throw Boom.unauthorized(`Missing "${abilityName}" ability!`);
+      throw Boom.unauthorized(`Missing "${permissionName}" permission!`);
     }
 
     next();
