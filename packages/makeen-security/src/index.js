@@ -1,6 +1,8 @@
 import get from 'lodash/get';
 import { Module } from 'makeen';
 import PermissionsManager from './libs/PermissionsManager';
+import * as schemas from './schemas';
+import SecurityServiceContainer from './services/Security';
 
 class Security extends Module {
   static configSchema = {};
@@ -9,8 +11,8 @@ class Security extends Module {
     this.permissions = new PermissionsManager({
       extractor: user => [
         ...(user.permissions || []),
-        ...user.roles.reduce(
-          (acc, role) => [...acc, ...(role.permissions || [])],
+        ...user.groups.reduce(
+          (acc, group) => [...acc, ...(group.permissions || [])],
           [],
         ),
       ],
@@ -19,6 +21,11 @@ class Security extends Module {
 
   async setup() {
     const { permissions } = this;
+
+    const [
+      { createRepository },
+      { registerServices },
+    ] = await this.dependencies(['storage', 'octobus']);
 
     await this.manager.run(
       'permissions:define',
@@ -36,6 +43,11 @@ class Security extends Module {
     );
 
     this.export({
+      ...registerServices(this, {
+        GroupRepository: createRepository('SecurityGroup', schemas.group),
+        UserRepository: createRepository('SecurityUser', schemas.user),
+        Security: new SecurityServiceContainer(),
+      }),
       permissions,
     });
   }

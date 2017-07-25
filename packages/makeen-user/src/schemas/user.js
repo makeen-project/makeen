@@ -11,9 +11,6 @@ export default {
   password: Joi.string().required(),
   salt: Joi.string(),
 
-  groupIds: Joi.array().items(Joi.object()).default([]),
-  permissionIds: Joi.array().items(Joi.object()).default([]),
-
   labels: Joi.array()
     .items(Joi.string().valid(constants.labels))
     .default(constants.defaultLabels),

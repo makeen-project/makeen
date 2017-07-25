@@ -3,8 +3,6 @@ import { Module } from 'makeen';
 import UserService from './services/User';
 import UserRepositoryService from './services/UserRepository';
 import AccountService from './services/Account';
-import accountSchema from './schemas/account';
-import userLoginSchema from './schemas/userLogin';
 import router from './router';
 import * as gqlMiddlewares from './graphql/middlewares';
 import jwtMiddleware from './middlewares/jwt';
@@ -12,6 +10,7 @@ import passportInitialize from './middlewares/passportInitialize';
 import passportSession from './middlewares/passportSession';
 import passportFactory from './libs/passport';
 import mockUser from './middlewares/mockUser';
+import * as schemas from './schemas';
 
 class User extends Module {
   static configSchema = {
@@ -89,10 +88,10 @@ class User extends Module {
             options: jwtConfig,
           },
         }),
-        UserRepository: new UserRepositoryService(),
+        UserRepository: new UserRepositoryService(schemas.user),
         Account: new AccountService(),
-        AccountRepository: createRepository('Account', accountSchema),
-        UserLoginRepository: createRepository('UserLogin', userLoginSchema),
+        AccountRepository: createRepository('Account', schemas.account),
+        UserLoginRepository: createRepository('UserLogin', schemas.userLogin),
       }),
       gqlMiddlewares,
       jwtMiddleware: this.jwtMiddleware,
