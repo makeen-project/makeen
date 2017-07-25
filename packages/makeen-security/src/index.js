@@ -16,13 +16,13 @@ class Security extends Module {
         userId: user._id,
       });
 
-    this.permissions = new PermissionsManager({
+    this.permissionsManager = new PermissionsManager({
       extractor: extractUserPermissions || extractor,
     });
   }
 
   async setup() {
-    const { permissions } = this;
+    const { permissionsManager } = this;
 
     const [
       { createRepository },
@@ -35,24 +35,27 @@ class Security extends Module {
         const modulePermissions = get(module, 'security.permissions');
         if (modulePermissions) {
           Object.keys(modulePermissions).forEach(permission => {
-            permissions.define(permission, modulePermissions[permission]);
+            permissionsManager.define(
+              permission,
+              modulePermissions[permission],
+            );
           });
         }
       },
       {
-        permissions,
+        permissionsManager,
       },
     );
 
     this.services = registerServices(this, {
       GroupRepository: createRepository('SecurityGroup', schemas.group),
       UserRepository: createRepository('SecurityUser', schemas.user),
-      Security: new SecurityServiceContainer(),
+      Security: new SecurityServiceContainer(this.permissionsManager),
     });
 
     this.export({
       ...this.services,
-      permissions,
+      permissionsManager,
     });
   }
 }

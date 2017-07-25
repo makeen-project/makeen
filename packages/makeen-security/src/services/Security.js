@@ -5,6 +5,11 @@ import { ServiceContainer, decorators } from 'octobus.js';
 const { service, withSchema } = decorators;
 
 class Security extends ServiceContainer {
+  constructor(permissionsManager) {
+    super();
+    this.permissionsManager = permissionsManager;
+  }
+
   @service()
   @withSchema({
     userId: Joi.any().required(),
@@ -109,6 +114,16 @@ class Security extends ServiceContainer {
           groupIds,
         },
       });
+  }
+
+  @service()
+  @withSchema({
+    subject: Joi.any().required(),
+    permission: Joi.string().required(),
+    object: Joi.any(),
+  })
+  can({ subject, permission, object }) {
+    return this.permissionsManager.can(subject, permission, object);
   }
 }
 
