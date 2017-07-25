@@ -7,7 +7,7 @@ const { service, withSchema } = decorators;
 class Security extends ServiceContainer {
   @service()
   @withSchema({
-    userId: Joi.object().required(),
+    userId: Joi.any().required(),
     permissions: Joi.array().items(Joi.string()).required(),
   })
   async setUserPermissions({ userId, permissions }, { extract }) {
@@ -38,7 +38,7 @@ class Security extends ServiceContainer {
 
   @service()
   @withSchema({
-    userId: Joi.object().required(),
+    userId: Joi.any().required(),
     includeGroups: Joi.boolean().default(true),
   })
   async getUserPermissions({ userId, includeGroups }, { extract }) {
@@ -72,7 +72,7 @@ class Security extends ServiceContainer {
 
   @service()
   @withSchema({
-    userId: Joi.object().required(),
+    userId: Joi.any().required(),
     groups: Joi.array().items(Joi.string()).required(),
   })
   async setUserGroups({ userId, groups }, { extract }) {
