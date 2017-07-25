@@ -17,7 +17,7 @@ A resource can be pretty much anything:
   - a business object
   - etc.
 
-Figuring out what are the things (resources) in the which require a restricted access will be an on-going process.
+Figuring out what are the things (resources) which require a restricted access will be an on-going process.
 
 ### 2. Applying restrictions to these resources.
 Once you identified the resources you can apply labels (permissions) to these, like `products.delete`, `isAdmin`, `sendEmail`.
