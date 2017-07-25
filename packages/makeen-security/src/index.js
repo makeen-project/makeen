@@ -9,13 +9,10 @@ class Security extends Module {
 
   initialize() {
     this.permissions = new PermissionsManager({
-      extractor: user => [
-        ...(user.permissions || []),
-        ...user.groups.reduce(
-          (acc, group) => [...acc, ...(group.permissions || [])],
-          [],
-        ),
-      ],
+      extractor: user =>
+        this.services.Security.getUserPermissions({
+          userId: user._id,
+        }),
     });
   }
 
@@ -42,12 +39,14 @@ class Security extends Module {
       },
     );
 
+    this.services = registerServices(this, {
+      GroupRepository: createRepository('SecurityGroup', schemas.group),
+      UserRepository: createRepository('SecurityUser', schemas.user),
+      Security: new SecurityServiceContainer(),
+    });
+
     this.export({
-      ...registerServices(this, {
-        GroupRepository: createRepository('SecurityGroup', schemas.group),
-        UserRepository: createRepository('SecurityUser', schemas.user),
-        Security: new SecurityServiceContainer(),
-      }),
+      ...this.services,
       permissions,
     });
   }

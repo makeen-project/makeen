@@ -12,14 +12,15 @@ class Security extends ServiceContainer {
   })
   async setUserPermissions({ userId, permissions }, { extract }) {
     const UserRepository = extract('UserRepository');
+
     const user = await UserRepository.findOne({
       query: {
         userId,
       },
     });
 
-    if (user) {
-      await UserRepository.updateOne({
+    return user
+      ? UserRepository.updateOne({
         query: {
           userId,
         },
@@ -28,22 +29,19 @@ class Security extends ServiceContainer {
             permissions,
           },
         },
+      })
+      : UserRepository.createOne({
+        userId,
+        permissions,
       });
-    } else {
-      await UserRepository.insertOne({
-        query: {
-          userId,
-          permissions,
-        },
-      });
-    }
   }
 
   @service()
   @withSchema({
     userId: Joi.object().required(),
+    includeGroups: Joi.boolean().default(true),
   })
-  async getUserPermissions({ userId }, { extract }) {
+  async getUserPermissions({ userId, includeGroups }, { extract }) {
     const UserRepository = extract('UserRepository');
     const GroupRepository = extract('GroupRepository');
     const user = await UserRepository.findOne({
@@ -54,14 +52,14 @@ class Security extends ServiceContainer {
 
     let groupsPermissions = [];
 
-    if (user.groupIds.length) {
+    if (includeGroups && user.groupIds.length) {
       const groups = await GroupRepository.findMany({
         query: {
           _id: {
             $in: user.groupIds,
           },
         },
-      });
+      }).then(c => c.toArray());
 
       groupsPermissions = groups.reduce(
         (acc, group) => [...acc, ...group.permissions],
@@ -91,11 +89,11 @@ class Security extends ServiceContainer {
           $in: groups,
         },
       },
-    });
+    }).then(c => c.toArray());
     const groupIds = fetchedGroups.map(({ _id }) => _id);
 
-    if (user) {
-      await UserRepository.updateOne({
+    return user
+      ? UserRepository.updateOne({
         query: {
           userId,
         },
@@ -104,15 +102,13 @@ class Security extends ServiceContainer {
             groupIds,
           },
         },
-      });
-    } else {
-      await UserRepository.insertOne({
+      })
+      : UserRepository.insertOne({
         query: {
           userId,
           groupIds,
         },
       });
-    }
   }
 }
 
