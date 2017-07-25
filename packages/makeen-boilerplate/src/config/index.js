@@ -7,6 +7,7 @@ const jwtSecret = randomstring.generate();
 
 Config.merge({
   rootDir,
+  rootURL: 'http://localhost:3000',
   isDev: process.env.NODE_ENV === 'development',
   port: 3000,
   sentry: {
@@ -47,12 +48,15 @@ Config.merge({
       passportMiddlewarePivot: 'cookieParser',
       mockUserConfig: {
         enabled: true,
-        path: '/graphql',
-        params: {},
+        path: '/',
+        params: {
+          email: '',
+        },
       },
       passportConfig: {
         enabled: false,
       },
+      rootURL: 'http://localhost:3000',
     },
     mailer: {
       transport: {
