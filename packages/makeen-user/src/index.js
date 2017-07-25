@@ -11,6 +11,8 @@ import passportSession from './middlewares/passportSession';
 import passportFactory from './libs/passport';
 import mockUser from './middlewares/mockUser';
 import * as schemas from './schemas';
+import ForgotPasswordTemplate from './mailerTemplates/ForgotPassword';
+import UserSignupTemplate from './mailerTemplates/UserSignup';
 
 class User extends Module {
   static configSchema = {
@@ -30,6 +32,16 @@ class User extends Module {
       .default({
         enabled: false,
       }),
+    emailTemplates: Joi.object()
+      .keys({
+        forgotPassword: Joi.any().required(),
+        userSignUp: Joi.any().required(),
+      })
+      .default({
+        forgotPassword: ForgotPasswordTemplate,
+        userSignUp: UserSignupTemplate,
+      }),
+    rootURL: Joi.string().required(),
   };
 
   hooks = {
@@ -68,6 +80,8 @@ class User extends Module {
     jwtConfig,
     mockUserMiddlewarePivot,
     mockUserConfig,
+    emailTemplates,
+    rootURL,
   }) {
     const [
       { createRepository },
@@ -87,6 +101,8 @@ class User extends Module {
             key: jwtSecret,
             options: jwtConfig,
           },
+          emailTemplates,
+          rootURL,
         }),
         UserRepository: new UserRepositoryService(schemas.user),
         Account: new AccountService(),

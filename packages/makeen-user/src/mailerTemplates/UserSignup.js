@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Layout from './Layout';
 
-const Hello = ({ user, account }) =>
+const Hello = ({ user, account, rootURL }) =>
   (<Layout>
     <h1>Hello!</h1>
     <p>
@@ -10,9 +10,7 @@ const Hello = ({ user, account }) =>
     </p>
     <p>
       Click{' '}
-      <a
-        href={`http://localhost:3000/account/${account._id.toString()}/confirm`}
-      >
+      <a href={`${rootURL}/account/${account._id.toString()}/confirm`}>
         here
       </a>{' '}
       to confirm your account.
@@ -23,6 +21,7 @@ const Hello = ({ user, account }) =>
 Hello.propTypes = {
   user: PropTypes.object.isRequired,
   account: PropTypes.object.isRequired,
+  rootURL: PropTypes.string.isRequired,
 };
 
 export default Hello;

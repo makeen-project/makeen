@@ -8,16 +8,16 @@ import moment from 'moment';
 import { decorators, ServiceContainer } from 'octobus.js';
 import crypto from 'crypto';
 import Boom from 'boom';
-import ForgotPasswordTemplaate from '../mailerTemplates/ForgotPassword';
-import UserSignupTemplate from '../mailerTemplates/UserSignup';
 import { FailedLogin } from '../libs/errors';
 
 const { service, withSchema } = decorators;
 
 class User extends ServiceContainer {
-  constructor(options) {
-    super(options);
-    this.jwtConfig = options.jwtConfig;
+  constructor({ jwtConfig, emailTemplates, rootURL }) {
+    super();
+    this.jwtConfig = jwtConfig;
+    this.emailTemplates = emailTemplates;
+    this.rootURL = rootURL;
   }
 
   setServiceBus(serviceBus) {
@@ -280,10 +280,11 @@ class User extends ServiceContainer {
     this.Mail.send({
       to: user.email,
       subject: 'welcome',
-      template: UserSignupTemplate,
+      template: this.emailTemplates.userSignUp,
       context: {
         user,
         account,
+        rootURL: this.rootURL,
       },
     });
 
@@ -339,10 +340,11 @@ class User extends ServiceContainer {
     this.Mail.send({
       to: user.email,
       subject: 'forgot password',
-      template: ForgotPasswordTemplaate,
+      template: this.emailTemplates.forgotPassword,
       context: {
         user,
         resetPassword,
+        rootURL: this.rootURL,
       },
     });
 
