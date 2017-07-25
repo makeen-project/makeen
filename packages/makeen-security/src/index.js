@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import get from 'lodash/get';
 import { Module } from 'makeen';
 import PermissionsManager from './libs/PermissionsManager';
@@ -5,14 +6,18 @@ import * as schemas from './schemas';
 import SecurityServiceContainer from './services/Security';
 
 class Security extends Module {
-  static configSchema = {};
+  static configSchema = {
+    extractUserPermissions: Joi.func(),
+  };
 
-  initialize() {
+  initialize({ extractUserPermissions }) {
+    const extractor = user =>
+      this.services.Security.getUserPermissions({
+        userId: user._id,
+      });
+
     this.permissions = new PermissionsManager({
-      extractor: user =>
-        this.services.Security.getUserPermissions({
-          userId: user._id,
-        }),
+      extractor: extractUserPermissions || extractor,
     });
   }
 
