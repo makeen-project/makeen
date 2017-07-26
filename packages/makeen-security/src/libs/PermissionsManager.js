@@ -19,7 +19,6 @@ class PermissionsManager {
       access: 'read',
     };
     this.extractor = extractor;
-    this.configure();
   }
 
   getAll() {
@@ -37,9 +36,6 @@ class PermissionsManager {
       [],
     );
   }
-
-  // eslint-disable-next-line class-methods-use-this
-  configure() {}
 
   has(name) {
     return Object.keys(this.permissions).includes(name);
@@ -82,12 +78,6 @@ class PermissionsManager {
   }
 
   async can(subject, permissionName, object) {
-    assert(subject, 'Subject is required!');
-    assert(
-      permissionName && typeof permissionName === 'string',
-      'Permission is required!',
-    );
-
     try {
       await this.check(subject, permissionName, object);
     } catch (err) {
@@ -118,6 +108,12 @@ class PermissionsManager {
   }
 
   async check(subject, permissionName, object) {
+    assert(subject, 'Subject is required!');
+    assert(
+      permissionName && typeof permissionName === 'string',
+      'Permission is required!',
+    );
+
     const name = Object.keys(this.aliases).includes(permissionName)
       ? this.aliases[permissionName]
       : permissionName;
