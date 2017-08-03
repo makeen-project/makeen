@@ -10,7 +10,6 @@ const envStore = new ENVStore('MAKEEN_CONFIG');
 config.addStore(memoryStore);
 config.addStore(envStore);
 const rootDir = path.resolve(__dirname, '../../');
-const jwtSecret = randomstring.generate();
 
 memoryStore.merge({
   rootDir,
@@ -21,7 +20,7 @@ memoryStore.merge({
     dsn: '',
   },
   secrets: {
-    jwt: jwtSecret,
+    jwt: randomstring.generate(),
   },
   paths: {
     web: path.resolve(rootDir, './web'),
@@ -45,7 +44,6 @@ memoryStore.merge({
       },
     },
     user: {
-      jwtSecret,
       jwtConfig: {
         expiresIn: '1d',
       },
@@ -94,5 +92,7 @@ memoryStore.merge({
     },
   },
 });
+
+memoryStore.set('modules.user.jwtSecret', memoryStore.get('secrets.jwt'));
 
 export default config;

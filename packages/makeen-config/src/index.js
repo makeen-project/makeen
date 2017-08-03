@@ -28,14 +28,6 @@ class Config {
     return this;
   }
 
-  aliases(map) {
-    Object.keys(map).forEach(from => {
-      this.alias(from, map[from]);
-    });
-
-    return this;
-  }
-
   async get(key, defaultValue) {
     invariant(key, 'Key is required!');
 
