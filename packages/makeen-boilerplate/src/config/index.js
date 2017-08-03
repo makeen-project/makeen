@@ -1,11 +1,18 @@
 import path from 'path';
-import { Config, helpers } from 'makeen';
+import Config from 'makeen-config';
+import MemoryStore from 'makeen-config/build/stores/Memory';
+import ENVStore from 'makeen-config/build/stores/Env';
 import randomstring from 'randomstring';
 
+const config = new Config();
+const memoryStore = new MemoryStore();
+const envStore = new ENVStore('MAKEEN_CONFIG');
+config.addStore(memoryStore);
+config.addStore(envStore);
 const rootDir = path.resolve(__dirname, '../../');
 const jwtSecret = randomstring.generate();
 
-Config.merge({
+memoryStore.merge({
   rootDir,
   rootURL: 'http://localhost:3000',
   isDev: process.env.NODE_ENV === 'development',
@@ -88,6 +95,4 @@ Config.merge({
   },
 });
 
-Config.merge(helpers.loadFromENV('MAKEEN_CONFIG', Config.get()));
-
-export default Config;
+export default config;

@@ -18,6 +18,7 @@ module.exports = {
     'import/core-modules': [
       'makeen',
       'makeen-cli',
+      'makeen-config',
       'makeen-file-storage',
       'makeen-graphql',
       'makeen-mailer',

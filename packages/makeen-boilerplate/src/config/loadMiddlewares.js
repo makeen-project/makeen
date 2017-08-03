@@ -1,47 +1,46 @@
 // import session from 'express-session';
 // import connectMongo from 'connect-mongo';
-import Config from './index';
 import * as middlewares from '../middlewares';
 
 // const MongoStore = connectMongo(session);
 
-export default [
+export default async config => [
   {
     ...middlewares.sentryRequestHandler,
-    params: Config.get('sentry.dsn'),
-    enabled: !Config.get('isDev'),
+    params: await config.get('sentry.dsn'),
+    enabled: !await config.get('isDev'),
   },
   middlewares.useragent,
   middlewares.cors,
   middlewares.helmet,
   {
     ...middlewares.morgan,
-    params: Config.get('morgan.format'),
-    enabled: Config.get('isDev'),
+    params: await config.get('morgan.format'),
+    enabled: await config.get('isDev'),
   },
   {
     ...middlewares.compression,
-    enabled: !Config.get('isDev'),
+    enabled: !await config.get('isDev'),
   },
   {
     ...middlewares.bodyParserJSON,
-    params: { limit: Config.get('maxUploadSize') },
+    params: { limit: await config.get('maxUploadSize') },
   },
   middlewares.bodyParserURLEncoded,
   {
     ...middlewares.cookieParser,
     params: {
-      secret: Config.get('session.secret'),
+      secret: await config.get('session.secret'),
     },
   },
   // {
   //   ...middlewares.session,
   //   params: {
-  //     ...Config.get('session'),
+  //     ...await config.get('session'),
   //     store: new MongoStore({
-  //       url: `mongodb://${Config.get('modules.storage.connection.host')}:${Config.get(
+  //       url: `mongodb://${await config.get('modules.storage.connection.host')}:${await config.get(
   //         'modules.storage.connection.port',
-  //       )}/${Config.get('modules.storage.connection.db')}`,
+  //       )}/${await config.get('modules.storage.connection.db')}`,
   //     }),
   //   },
   // },
@@ -52,21 +51,21 @@ export default [
   middlewares.isMethod,
   {
     ...middlewares.sentryErrorHandler,
-    enabled: !Config.get('isDev'),
+    enabled: !await config.get('isDev'),
   },
   middlewares.joiErrorHandler,
   {
     ...middlewares.boomErrorHandler,
     params: {
       ...middlewares.boomErrorHandler.params,
-      isDev: Config.get('isDev'),
+      isDev: await config.get('isDev'),
     },
   },
   {
     ...middlewares.errorHandler,
     params: {
       ...middlewares.errorHandler.params,
-      isDev: Config.get('isDev'),
+      isDev: await config.get('isDev'),
     },
   },
 ];

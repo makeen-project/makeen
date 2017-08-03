@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import _ from 'lodash';
 import MemoryStore from './Memory';
 
@@ -20,9 +19,17 @@ class EnvStore extends MemoryStore {
   }
 
   get(key) {
-    return this.has(key)
-      ? JSON.parse(super.get(EnvStore.makeKey(this.prefix, key)))
-      : undefined;
+    if (!this.has(key)) {
+      return undefined;
+    }
+
+    const value = super.get(EnvStore.makeKey(this.prefix, key));
+
+    try {
+      return JSON.parse(value);
+    } catch (err) {
+      return value;
+    }
   }
 
   set(key, value) {
