@@ -5,7 +5,6 @@ import Cache from './cache/Memory';
 class Config {
   constructor(cache = new Cache()) {
     this.stores = [];
-    this.aliases = {};
     this.cache = cache;
   }
 
@@ -13,27 +12,8 @@ class Config {
     this.stores.unshift(store);
   }
 
-  alias(from, to) {
-    invariant(
-      typeof from === 'string',
-      `Aliases have to be strings; got ${typeof from} instead!`,
-    );
-    invariant(
-      typeof to === 'string',
-      `Aliases references have to be strings; got ${typeof to} instead!`,
-    );
-
-    this.aliases[from] = to;
-
-    return this;
-  }
-
   async get(key, defaultValue) {
     invariant(key, 'Key is required!');
-
-    if (this.aliases[key] !== undefined) {
-      return this.get(this.aliases[key]);
-    }
 
     if (this.cache.has(key)) {
       return this.cache.get(key);
