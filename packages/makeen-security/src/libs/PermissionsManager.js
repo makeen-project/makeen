@@ -53,7 +53,7 @@ class PermissionsManager {
       description: Joi.string().default(`${permission} permission definition`),
       dependencies: Joi.array().default([]),
       check: Joi.func().default(() => true),
-      validateObject: Joi.func().default(() => true),
+      isValidObject: Joi.func().default(() => true),
     });
 
     if (this.has(permission)) {
@@ -134,7 +134,7 @@ class PermissionsManager {
       );
     }
 
-    if (!permission.validateObject(object)) {
+    if (!permission.isValidObject(object)) {
       throw new NotAllowed(
         `Failed permission check "${name}"! Reason: received invalid object (${object}).`,
       );

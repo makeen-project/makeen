@@ -48,7 +48,7 @@ Config.merge({
       passportMiddlewarePivot: 'cookieParser',
       mockUserConfig: {
         enabled: true,
-        path: '/',
+        path: '/graphiql',
         params: {
           email: '',
         },

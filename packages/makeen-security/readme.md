@@ -223,3 +223,6 @@ permissionsManager.define('articles.update', {
 
 `validateObject` is a function that will receive the object as the only parameter and has to return a boolean result.
 
+----------------
+Now let's see how wen can use what we've learned so far in the context of makeen.
+

@@ -45,6 +45,7 @@
     "makeen-logger": "^1.2.1",
     "makeen-mailer": "^1.2.1",
     "makeen-octobus": "^1.4.1",
+    "makeen-okta": "*",
     "makeen-router": "^1.3.1",
     "makeen-security": "^0.2.0",
     "makeen-storage": "^1.2.1",

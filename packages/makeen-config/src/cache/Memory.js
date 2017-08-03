@@ -1,4 +1,4 @@
-class Cache {
+class MemoryCache {
   static resolve(value) {
     return typeof value === 'function' ? value() : Promise.resolve(value);
   }
@@ -7,14 +7,17 @@ class Cache {
     return entry.expire && entry.expire < Date.now();
   }
 
-  constructor() {
+  constructor(defaultTTL) {
     this.store = {};
+    this.defaultTTL = defaultTTL;
   }
 
   set(key, value, ttl) {
+    const finalTTL = ttl || this.defaultTTL;
+
     const entry = {
       value,
-      expire: ttl ? ttl + Date.now() : false,
+      expire: finalTTL ? finalTTL + Date.now() : false,
     };
 
     if (ttl) {
@@ -28,6 +31,13 @@ class Cache {
     return this;
   }
 
+  has(key) {
+    return (
+      Object.keys(this.store).includes(key) &&
+      !MemoryCache.isExpired(this.store[key])
+    );
+  }
+
   get(key, defaultValue) {
     const entry = this.store[key];
 
@@ -35,12 +45,12 @@ class Cache {
       return defaultValue;
     }
 
-    if (Cache.isExpired(entry)) {
+    if (MemoryCache.isExpired(entry)) {
       this.remove(key);
       return defaultValue;
     }
 
-    return Cache.resolve(entry.value);
+    return MemoryCache.resolve(entry.value);
   }
 
   remove(key) {
@@ -59,7 +69,9 @@ class Cache {
 
   clear() {
     this.store = {};
+
+    return this;
   }
 }
 
-export default Cache;
+export default MemoryCache;
