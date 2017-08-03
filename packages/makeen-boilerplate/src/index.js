@@ -33,7 +33,5 @@ Promise.all([loadMiddlewares(config), loadModules(config), config.get('port')])
 
       console.log(chalk.bgBlue.white(message));
     });
-
-    console.log(await config.get('port'));
   })
   .catch(console.log.bind(console));
