@@ -47,10 +47,6 @@ class EnvStore extends MemoryStore {
   unset(key) {
     return super.unset(EnvStore.makeKey(this.prefix, key));
   }
-
-  toJSON() {
-    return this.backend;
-  }
 }
 
 export default EnvStore;

@@ -49,6 +49,7 @@ class Mailer extends Module {
 
     this.export({
       Mail,
+      send: (...args) => Mail.send(...args),
     });
   }
 }

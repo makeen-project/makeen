@@ -1,8 +1,4 @@
 class MemoryCache {
-  static resolve(value) {
-    return typeof value === 'function' ? value() : Promise.resolve(value);
-  }
-
   static isExpired(entry) {
     return entry.expire && entry.expire < Date.now();
   }
@@ -20,10 +16,10 @@ class MemoryCache {
       expire: finalTTL ? finalTTL + Date.now() : false,
     };
 
-    if (ttl) {
+    if (finalTTL) {
       entry.timeoutId = setTimeout(() => {
         this.remove(key);
-      }, ttl);
+      }, finalTTL);
     }
 
     this.store[key] = entry;
@@ -50,7 +46,7 @@ class MemoryCache {
       return defaultValue;
     }
 
-    return MemoryCache.resolve(entry.value);
+    return entry.value;
   }
 
   remove(key) {

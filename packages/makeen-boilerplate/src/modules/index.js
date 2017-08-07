@@ -14,7 +14,6 @@ import AdminModule from './admin';
 
 export default async config => [
   new OctobusModule({
-    ...(await config.get('modules.octobus')),
     messageStore: new StdoutStore(),
   }),
   new LoggerModule(await config.get('modules.logger')),

@@ -27,10 +27,6 @@ class MemoryStore {
     _.unset(this.backend, key);
     return this;
   }
-
-  toJSON() {
-    return this.backend;
-  }
 }
 
 export default MemoryStore;

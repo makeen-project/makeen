@@ -12,18 +12,28 @@ class Config {
     this.stores.unshift(store);
   }
 
-  async get(key, defaultValue) {
+  async get(key, defaultValue, ttl) {
     invariant(key, 'Key is required!');
 
     if (this.cache.has(key)) {
       return this.cache.get(key);
     }
 
-    const store = await this.stores.find(s => s.has(key));
+    const store = await this.stores.reduce(
+      (acc, currentStore) =>
+        acc.then(async foundStore => {
+          if (foundStore) {
+            return foundStore;
+          }
+
+          return (await currentStore.has(key)) ? currentStore : false;
+        }),
+      Promise.resolve(false),
+    );
 
     if (store) {
       const value = await store.get(key);
-      this.cache.set(key, value);
+      this.cache.set(key, value, ttl);
       return value;
     }
 
