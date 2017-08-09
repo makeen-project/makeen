@@ -1,9 +1,6 @@
 {
   "name": "makeen-security",
-  "version": "0.2.1",
-  "engines": {
-    "node": "7.x.x"
-  },
+  "version": "0.2.2",
   "description": "Makeen security",
   "main": "build/index.js",
   "scripts": {},
