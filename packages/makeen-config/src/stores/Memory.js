@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
 class MemoryStore {
-  constructor() {
-    this.backend = {};
+  constructor(backend = {}) {
+    this.backend = backend;
   }
 
   has(key) {

@@ -1,9 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import invariant from 'invariant';
-import Cache from './cache/Memory';
+import MemoryCache from './cache/Memory';
+import * as stores from './stores';
+import * as caches from './cache';
 
 class Config {
-  constructor(cache = new Cache()) {
+  constructor(cache = new MemoryCache()) {
     this.stores = [];
     this.cache = cache;
   }
@@ -49,4 +51,4 @@ class Config {
   }
 }
 
-export { Config as default };
+export { Config as default, stores, caches };
