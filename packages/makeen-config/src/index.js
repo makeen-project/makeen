@@ -14,6 +14,14 @@ class Config {
     this.stores.unshift(store);
   }
 
+  async multiGet(keys, ttl) {
+    invariant(
+      Array.isArray(keys),
+      'Config.multiGet requires an array of keys!',
+    );
+    return Promise.all(keys.map(key => this.get(key, undefined, ttl)));
+  }
+
   async get(key, defaultValue, ttl) {
     invariant(key, 'Key is required!');
 

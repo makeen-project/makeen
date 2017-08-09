@@ -23,8 +23,9 @@ store.set('email', 'test@example.com');
 config.addStore(store);
 
 const run = async () => {
-  assert.equal(await config.get('port'), 3001);
-  assert.equal(await config.get('email'), 'test@example.com');
+  const [port, email] = await config.multiGet(['port', 'email']);
+  assert.equal(port, 3001);
+  assert.equal(email, 'test@example.com');
 };
 
 run().catch(console.log);
