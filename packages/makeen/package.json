@@ -1,6 +1,6 @@
 {
   "name": "makeen",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Highly scalable and modular node.js web framework built on top of express.js",
   "main": "build/index.js",
   "scripts": {},
@@ -8,7 +8,12 @@
     "type": "git",
     "url": "https://github.com/makeen-project/makeen/tree/master/packages/makeen"
   },
-  "keywords": ["makeen", "octobus", "express.js", "node.js web framework"],
+  "keywords": [
+    "makeen",
+    "octobus",
+    "express.js",
+    "node.js web framework"
+  ],
   "author": "Victor Zamfir <victor@makeen.io>",
   "license": "MIT",
   "bugs": {
