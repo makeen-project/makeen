@@ -15,7 +15,6 @@
     "lint": "eslint .",
     "precommit": "lint-staged",
     "watch:files": "babel-node ./packages/makeen-cli/src/scripts/watch.js",
-    "watch:server": "nodemon packages/makeen-boilerplate/build/index.js",
     "build": "babel-node ./packages/makeen-cli/src/scripts/build.js",
     "dev": "yarn run build && run-p watch:*",
     "publish-packages": "npm run build && lerna publish"
