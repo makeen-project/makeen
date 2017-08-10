@@ -17,10 +17,11 @@ class CustomStore extends MemoryStore {
 
 const config = new Config();
 const store = new CustomStore();
-store.set('port', 3000);
-store.set('email', 'test@example.com');
 
 config.addStore(store);
+
+store.set('port', 3000);
+store.set('email', 'test@example.com');
 
 const run = async () => {
   const [port, email] = await config.multiGet(['port', 'email']);
