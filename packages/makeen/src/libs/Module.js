@@ -49,6 +49,17 @@ class Module {
     return Object.assign(this.manager.exportMap[this.name], map);
   }
 
+  get(key) {
+    if (!Object.keys(this.manager.exportMap[this.name]).includes(key)) {
+      throw new Error(
+        `Unable to get exported value for "${key}" key in "${this
+          .name}" module!`,
+      );
+    }
+
+    return this.manager.exportMap[this.name][key];
+  }
+
   connect(manager) {
     this._manager = manager;
     this.emit('before:initialize');

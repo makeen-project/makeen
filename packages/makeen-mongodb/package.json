@@ -1,11 +1,11 @@
 {
-  "name": "makeen-storage",
-  "version": "1.2.2",
+  "name": "makeen-mongodb",
+  "version": "1.0.0",
   "description": "Makeen database storage module providing MongoDB integration.",
   "main": "build/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/makeen-project/makeen/tree/master/packages/makeen-storage"
+    "url": "https://github.com/makeen-project/makeen/tree/master/packages/makeen-mongodb"
   },
   "author": "Victor Zamfir <victor@makeen.io>",
   "license": "MIT",
@@ -14,6 +14,7 @@
   },
   "homepage": "https://github.com/makeen-project/makeen#readme",
   "dependencies": {
+    "joi": "10.5.1",
     "makeen": "^1.2.2",
     "mongo-dnorm": "0.2.4",
     "mongodb": "2.2.27",

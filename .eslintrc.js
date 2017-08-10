@@ -23,7 +23,7 @@ module.exports = {
       'makeen-graphql',
       'makeen-mailer',
       'makeen-router',
-      'makeen-storage',
+      'makeen-mongodb',
       'makeen-user',
       'makeen-security',
     ],

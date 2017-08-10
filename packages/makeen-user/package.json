@@ -24,7 +24,7 @@
     "lodash": "4.17.4",
     "makeen": "^1.2.2",
     "makeen-router": "^1.3.2",
-    "makeen-storage": "^1.2.2",
+    "makeen-mongodb": "^1.0.0",
     "moment": "2.18.1",
     "mongodb": "2.2.27",
     "octobus.js": "1.1.2",

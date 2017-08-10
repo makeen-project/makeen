@@ -27,7 +27,7 @@ class Security extends Module {
     const [
       { createRepository },
       { registerServices },
-    ] = await this.dependencies(['storage', 'octobus']);
+    ] = await this.dependencies(['mongoDb', 'octobus']);
 
     await this.manager.run(
       'permissions:define',

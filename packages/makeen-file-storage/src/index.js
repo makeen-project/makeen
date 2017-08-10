@@ -23,7 +23,7 @@ class FileStorage extends Module {
   async setup() {
     const [{ registerServices }] = await this.dependencies([
       'octobus',
-      'storage',
+      'mongoDb',
     ]);
     this.export(
       registerServices(this, {

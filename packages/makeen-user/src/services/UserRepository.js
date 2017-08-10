@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { Repository } from 'makeen-storage';
+import { Repository } from 'makeen-mongodb';
 
 class UserRepository extends Repository {
   static hashPassword({ password, salt }) {

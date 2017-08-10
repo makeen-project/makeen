@@ -87,7 +87,7 @@ class User extends Module {
       { createRepository },
       { createServiceBus },
       { addRouter },
-    ] = await this.dependencies(['storage', 'octobus', 'router']);
+    ] = await this.dependencies(['mongoDb', 'octobus', 'router']);
     const routerConfig = {
       jwtMiddleware: this.jwtMiddleware,
     };
