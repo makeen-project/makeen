@@ -47,10 +47,12 @@ class MongoDB extends Module {
     super(...args);
 
     this.connections = {};
+
     this.createStore = this.createStore.bind(this);
     this.createRepository = this.createRepository.bind(this);
     this.createConnection = this.createConnection.bind(this);
     this.getConnection = this.getConnection.bind(this);
+    this.bindRepository = this.bindRepository.bind(this);
   }
 
   createStore(connectionName, options) {
@@ -136,6 +138,7 @@ class MongoDB extends Module {
       getConnection,
       createStore,
       createRepository,
+      bindRepository,
     } = this;
 
     await Promise.all(connections.map(createConnection));
@@ -145,6 +148,7 @@ class MongoDB extends Module {
       createRepository,
       createConnection,
       getConnection,
+      bindRepository,
     });
   }
 }
