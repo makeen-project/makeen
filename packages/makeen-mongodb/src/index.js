@@ -125,7 +125,7 @@ class MongoDB extends Module {
     if (!names.includes(this.defaultConnectionName)) {
       throw new Error(
         `Default connection name (${this
-          .defaultConnectionName}) can't be find through the list of available connections (${names})`,
+          .defaultConnectionName}) can't be found through the list of available connections (${names})`,
       );
     }
   }
