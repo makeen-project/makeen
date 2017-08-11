@@ -21,18 +21,19 @@ class FileStorage extends Module {
   }
 
   async setup() {
-    const [{ registerServices }] = await this.dependencies([
+    const [{ registerServices }, { bindRepository }] = await this.dependencies([
       'octobus',
       'mongoDb',
     ]);
-    this.export(
-      registerServices(this, {
-        File: new FileService({
-          uploadDir: this.getConfig('uploadDir'),
-        }),
-        FileRepository: new FileRepositoryService(),
+
+    const services = registerServices(this, {
+      File: new FileService({
+        uploadDir: this.getConfig('uploadDir'),
       }),
-    );
+      FileRepository: bindRepository(new FileRepositoryService()),
+    });
+
+    this.export(services);
   }
 }
 

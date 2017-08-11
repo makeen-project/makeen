@@ -62,6 +62,15 @@ joi@10.2.2:
     items "2.x.x"
     topo "2.x.x"
 
+joi@10.5.1:
+  version "10.5.1"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-10.5.1.tgz#22c608d106c1f7fe18c6f1bf38a228fdf2daab7f"
+  dependencies:
+    hoek "4.x.x"
+    isemail "2.x.x"
+    items "2.x.x"
+    topo "2.x.x"
+
 joi@^8.0.5:
   version "8.4.2"
   resolved "https://registry.yarnpkg.com/joi/-/joi-8.4.2.tgz#bd7774658fe99058d8994ed1d4b9962484ebb859"

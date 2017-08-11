@@ -55,8 +55,10 @@ class MongoDB extends Module {
     this.bindRepository = this.bindRepository.bind(this);
   }
 
-  createStore(connectionName, options) {
-    const { refManager, db, Store } = this.getConnection(connectionName);
+  createStore(options, connectionName) {
+    const { refManager, db, Store } = this.getConnection(
+      connectionName || this.defaultConnectionName,
+    );
     return new Store({
       db,
       refManager,
@@ -64,7 +66,6 @@ class MongoDB extends Module {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   createRepository({ name, schema, methods = {}, connectionName, store }) {
     const repository = new Repository(schema, name);
     Object.keys(methods).forEach(methodName => {
@@ -84,11 +85,16 @@ class MongoDB extends Module {
   }
 
   bindRepository(repository, connectionName) {
-    const store = this.createStore(connectionName, {
-      collectionName: repository.collectionName,
-    });
+    const store = this.createStore(
+      {
+        collectionName: repository.collectionName,
+      },
+      connectionName || this.defaultConnectionName,
+    );
 
     repository.setStore(store);
+
+    return repository;
   }
 
   async createConnection(options) {
