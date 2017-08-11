@@ -48,8 +48,14 @@ class Security extends Module {
     );
 
     this.services = registerServices(this, {
-      GroupRepository: createRepository('SecurityGroup', schemas.group),
-      UserRepository: createRepository('SecurityUser', schemas.user),
+      GroupRepository: createRepository({
+        name: 'SecurityGroup',
+        schema: schemas.group,
+      }),
+      UserRepository: createRepository({
+        name: 'SecurityUser',
+        schema: schemas.user,
+      }),
       Security: new SecurityServiceContainer(this.permissionsManager),
     });
 

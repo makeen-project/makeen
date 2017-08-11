@@ -84,7 +84,7 @@ class User extends Module {
     rootURL,
   }) {
     const [
-      { createRepository },
+      { createRepository, bindRepository },
       { createServiceBus },
       { addRouter },
     ] = await this.dependencies(['mongoDb', 'octobus', 'router']);
@@ -104,10 +104,16 @@ class User extends Module {
           emailTemplates,
           rootURL,
         }),
-        UserRepository: new UserRepositoryService(schemas.user),
+        UserRepository: bindRepository(new UserRepositoryService(schemas.user)),
         Account: new AccountService(),
-        AccountRepository: createRepository('Account', schemas.account),
-        UserLoginRepository: createRepository('UserLogin', schemas.userLogin),
+        AccountRepository: createRepository({
+          name: 'Account',
+          schema: schemas.account,
+        }),
+        UserLoginRepository: createRepository({
+          name: 'UserLogin',
+          schema: schemas.userLogin,
+        }),
       }),
       gqlMiddlewares,
       jwtMiddleware: this.jwtMiddleware,
