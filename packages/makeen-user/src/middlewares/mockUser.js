@@ -3,9 +3,11 @@ export default {
   factory: query => async (req, res, next) => {
     try {
       if (!req.user) {
-        req.user = await req.app.modules.get('user').UserRepository.findOne({
-          query,
-        });
+        req.user = await req.app.modules
+          .get('makeen:user')
+          .UserRepository.findOne({
+            query,
+          });
       }
     } catch (err) {
       return next(err);

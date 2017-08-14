@@ -10,16 +10,16 @@ export default createMiddleware({
   factory: params => [
     jwt(params),
     async (req, res, next) => {
+      const { UserRepository, AccountRepository, User } = req.app.modules.get(
+        'makeen:user',
+      );
+
       try {
         const { id } = req.jwtPayload;
-        const user = await req.app.modules
-          .get('user')
-          .UserRepository.findById(objectId(id));
-        const account = await req.app.modules
-          .get('user')
-          .AccountRepository.findById(user.accountId);
+        const user = await UserRepository.findById(objectId(id));
+        const account = await AccountRepository.findById(user.accountId);
 
-        const canLogin = await req.app.modules.get('user').User.canLogin({
+        const canLogin = await User.canLogin({
           user,
           account,
         });

@@ -10,6 +10,8 @@ class Security extends Module {
     extractUserPermissions: Joi.func(),
   };
 
+  name = 'makeen:security';
+
   initialize({ extractUserPermissions }) {
     const extractor = user =>
       this.services.Security.getUserPermissions({
@@ -27,7 +29,7 @@ class Security extends Module {
     const [
       { createRepository },
       { registerServices },
-    ] = await this.dependencies(['mongoDb', 'octobus']);
+    ] = await this.dependencies(['makeen:mongoDb', 'makeen:octobus']);
 
     await this.manager.run(
       'permissions:define',

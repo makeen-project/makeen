@@ -3,9 +3,12 @@ import { Router } from 'express';
 import celebrate from 'celebrate';
 import { ObjectID as objectId } from 'mongodb';
 import { helpers } from 'makeen-router';
+import injectServices from '../middlewares/injectServices';
 
 const { wrapHandler, idValidator } = helpers;
 const router = Router();
+
+router.use(injectServices);
 
 router.get(
   '/:id/confirm',
@@ -15,7 +18,7 @@ router.get(
     },
   }),
   wrapHandler(async req => {
-    const { Account } = req.app.modules.get('user');
+    const { Account } = req.services;
     return Account.confirm(objectId(req.params.id));
   }),
 );
@@ -28,7 +31,7 @@ router.post(
     },
   }),
   wrapHandler(async req => {
-    const { Account } = req.app.modules.get('user');
+    const { Account } = req.services;
     const { email } = req.body;
 
     await Account.resendActivationEmail({ email });

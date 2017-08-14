@@ -12,13 +12,20 @@ class PermissionsManager {
     }));
   }
 
-  constructor({ extractor = subject => subject.permissions } = {}) {
-    this.permissions = {};
-    this.aliases = {
+  constructor({
+    extractor = subject => subject.permissions,
+    aliases = {
       view: 'read',
       access: 'read',
-    };
+    },
+  }) {
+    this.permissions = {};
+    this.aliases = aliases;
     this.extractor = extractor;
+  }
+
+  createAlias(forPermission, toPermission) {
+    this.aliases[forPermission] = toPermission;
   }
 
   getAll() {

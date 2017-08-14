@@ -7,11 +7,14 @@ import Boom from 'boom';
 import userSchema from '../schemas/user';
 import { sanitizeUserData } from '../libs/helpers';
 import { FailedLogin } from '../libs/errors';
+import injectServices from '../middlewares/injectServices';
 
 const { wrapHandler } = helpers;
 
 export default ({ jwtMiddleware }) => {
   const router = Router();
+
+  router.use(injectServices);
 
   router.post(
     '/login',
@@ -19,7 +22,7 @@ export default ({ jwtMiddleware }) => {
       body: pick(userSchema, ['username', 'password']),
     }),
     wrapHandler(async (req, res) => {
-      const { User, UserLoginRepository } = req.app.modules.get('user');
+      const { User, UserLoginRepository } = req.services;
       let result;
       try {
         result = await User.login(req.body);
@@ -52,7 +55,7 @@ export default ({ jwtMiddleware }) => {
     celebrate({
       body: pick(userSchema, ['name', 'username', 'email', 'password']),
     }),
-    wrapHandler(req => req.app.modules.get('user').User.signup(req.body)),
+    wrapHandler(req => req.services.User.signup(req.body)),
   );
 
   router.post(
@@ -63,7 +66,7 @@ export default ({ jwtMiddleware }) => {
       },
     }),
     wrapHandler(async req => {
-      const { User } = req.app.modules.get('user');
+      const { User } = req.services;
       const { user, updateResult } = await User.resetPassword(
         req.body.usernameOrEmail,
       );
@@ -86,7 +89,7 @@ export default ({ jwtMiddleware }) => {
       },
     }),
     wrapHandler(async req => {
-      const { User } = req.app.modules.get('user');
+      const { User } = req.services;
       const { password } = req.body;
       const { token } = req.params;
       const { user, updateResult } = await User.recoverPassword({
@@ -111,7 +114,7 @@ export default ({ jwtMiddleware }) => {
       },
     }),
     wrapHandler(req =>
-      req.app.modules.get('user').User.changePassword({
+      req.services.User.changePassword({
         ...req.body,
         userId: req.user._id,
       }),
@@ -131,7 +134,7 @@ export default ({ jwtMiddleware }) => {
       body: pick(userSchema, ['name', 'username']),
     }),
     wrapHandler(async req => {
-      await this.UserRepository.updateOne({
+      await req.services.UserRepository.updateOne({
         query: {
           _id: req.user._id,
         },

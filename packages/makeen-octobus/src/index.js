@@ -18,6 +18,8 @@ class Octobus extends Module {
     ),
   };
 
+  name = 'makeen:octobus';
+
   constructor(...args) {
     super(...args);
     this.createServiceBus = this.createServiceBus.bind(this);

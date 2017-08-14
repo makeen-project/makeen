@@ -11,6 +11,8 @@ class Router extends Module {
     autoload: Joi.boolean().default(true),
   };
 
+  name = 'makeen:router';
+
   constructor(...args) {
     super(...args);
     this.addRouter = this.addRouter.bind(this);

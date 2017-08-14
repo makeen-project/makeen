@@ -3,11 +3,14 @@ import Joi from 'joi';
 import { ObjectID as objectId } from 'mongodb';
 import { Router } from 'express';
 import { helpers } from 'makeen-router';
+import injectServices from '../middlewares/injectServices';
 
 const { wrapHandler, idValidator } = helpers;
 
 export default ({ uploadMiddleware }) => {
   const router = Router();
+
+  router.use(injectServices);
 
   router.param('id', async (req, res, next, rawId) => {
     const { error, value } = Joi.validate(rawId, idValidator);
@@ -19,9 +22,7 @@ export default ({ uploadMiddleware }) => {
     const id = objectId(value);
 
     try {
-      const file = await req.app.modules
-        .get('fileStorage')
-        .FileRepository.findById(id);
+      const file = await req.services.FileRepository.findById(id);
 
       if (!file) {
         return next(Boom.notFound(`Unable to find entity with id ${rawId}`));
@@ -39,7 +40,7 @@ export default ({ uploadMiddleware }) => {
     '/files/upload',
     uploadMiddleware.single('file'),
     wrapHandler(req =>
-      req.app.modules.get('fileStorage').File.createFromUpload({
+      req.services.File.createFromUpload({
         filename: req.file.originalname,
         path: req.file.path,
         size: req.file.size,
@@ -51,7 +52,7 @@ export default ({ uploadMiddleware }) => {
 
   router.get('/files/:id/download', async (req, res, next) => {
     try {
-      const filePath = await req.app.modules.get('fileStorage').File.getPath({
+      const filePath = await req.services.File.getPath({
         file: req.fileEntity,
       });
       res.sendFile(filePath);

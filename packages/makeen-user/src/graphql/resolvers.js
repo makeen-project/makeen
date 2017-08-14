@@ -2,18 +2,18 @@ export default {
   Query: {
     users: (_, args, { app, fromMongo }) =>
       app.modules
-        .get('user')
+        .get('makeen:user')
         .UserRepository.findMany()
         .then(c => c.map(fromMongo).toArray()),
   },
   Mutation: {
     login: async (_, { username, password }, { app, req, fromMongo }) => {
-      const result = await app.modules
-        .get('user')
-        .User.login({ username, password });
-      const user = await app.modules.get('user').User.dump(result);
+      const { User, UserLoginRepository } = app.modules.get('makeen:user');
 
-      await app.modules.get('user').UserLoginRepository.createOne({
+      const result = await User.login({ username, password });
+      const user = await User.dump(result);
+
+      await UserLoginRepository.createOne({
         userId: user._id,
         ip: req.ip,
         browser: req.useragent.browser,

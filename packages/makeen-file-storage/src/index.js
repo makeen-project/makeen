@@ -10,6 +10,8 @@ class FileStorage extends Module {
     uploadDir: Joi.string().required(),
   };
 
+  name = 'makeen:fileStorage';
+
   initialize({ uploadDir }) {
     this.uploadMiddleware = uploadMiddleware({
       dest: uploadDir,
@@ -22,8 +24,8 @@ class FileStorage extends Module {
 
   async setup() {
     const [{ registerServices }, { bindRepository }] = await this.dependencies([
-      'octobus',
-      'mongoDb',
+      'makeen:octobus',
+      'makeen:mongoDb',
     ]);
 
     const services = registerServices(this, {

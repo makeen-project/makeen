@@ -16,7 +16,7 @@ export default ({ jwtSecret }) => {
       },
       async (req, id, done) => {
         const { UserRepository, AccountRepository, User } = req.app.modules.get(
-          'user',
+          'makeen:user',
         );
         try {
           const user = await UserRepository.findById(objectId(id));
@@ -45,7 +45,7 @@ export default ({ jwtSecret }) => {
         passReqToCallback: true,
       },
       async (req, username, password, done) => {
-        const { User } = req.app.modules.get('user');
+        const { User } = req.app.modules.get('makeen:user');
 
         try {
           const user = await User.login({ username, password });
@@ -67,7 +67,7 @@ export default ({ jwtSecret }) => {
 
   passport.deserializeUser((req, id, cb) => {
     req.app.modules
-      .get('user.UserRepository')
+      .get('makeen:user.UserRepository')
       .findById(objectId(id))
       .then(user => cb(null, user), cb);
   });

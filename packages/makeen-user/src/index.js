@@ -44,6 +44,8 @@ class User extends Module {
     rootURL: Joi.string().required(),
   };
 
+  name = 'makeen:user';
+
   hooks = {
     'router:load': () => {},
   };
@@ -87,7 +89,11 @@ class User extends Module {
       { createRepository, bindRepository },
       { createServiceBus },
       { addRouter },
-    ] = await this.dependencies(['mongoDb', 'octobus', 'router']);
+    ] = await this.dependencies([
+      'makeen:mongoDb',
+      'makeen:octobus',
+      'makeen:router',
+    ]);
     const routerConfig = {
       jwtMiddleware: this.jwtMiddleware,
     };
