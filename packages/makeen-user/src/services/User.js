@@ -6,7 +6,6 @@ import pick from 'lodash/pick';
 import bcrypt from 'bcryptjs';
 import moment from 'moment';
 import { decorators, ServiceContainer } from 'octobus.js';
-import crypto from 'crypto';
 import Boom from 'boom';
 import { FailedLogin } from '../libs/errors';
 
@@ -52,18 +51,7 @@ class User extends ServiceContainer {
   async login({ username, password }, { extract }) {
     const UserRepository = extract('UserRepository');
     const AccountRepository = extract('AccountRepository');
-    const user = await UserRepository.findOne({
-      query: {
-        $or: [
-          {
-            username,
-          },
-          {
-            email: username,
-          },
-        ],
-      },
-    });
+    const user = await UserRepository.findOneByUsername(username);
 
     if (!user) {
       throw new FailedLogin('User not found!');
@@ -193,14 +181,9 @@ class User extends ServiceContainer {
       throw Boom.badRequest("You can't use the same password!");
     }
 
-    return this.UserRepository.updateOne({
-      query: { _id: user._id },
-      update: {
-        $set: {
-          resetPassword: {},
-          password: hashedPassword,
-        },
-      },
+    return this.UserRepository.updatePassword({
+      userId: user._id,
+      password: hashedPassword,
     });
   }
 
@@ -229,14 +212,9 @@ class User extends ServiceContainer {
       throw Boom.badRequest("You can't use the same password!");
     }
 
-    const updateResult = await this.UserRepository.updateOne({
-      query: { _id: user._id },
-      update: {
-        $set: {
-          resetPassword: {},
-          password: hashedPassword,
-        },
-      },
+    const updateResult = await this.UserRepository.updatePassword({
+      userId: user._id,
+      password: hashedPassword,
     });
 
     return {
@@ -247,17 +225,9 @@ class User extends ServiceContainer {
 
   @service()
   async signup({ username, email }, { message }) {
-    const existingUser = await this.UserRepository.findOne({
-      query: {
-        $or: [
-          {
-            username,
-          },
-          {
-            email,
-          },
-        ],
-      },
+    const existingUser = await this.UserRepository.findOneByUsernameOrEmail({
+      username,
+      email,
     });
 
     if (existingUser) {
@@ -308,34 +278,13 @@ class User extends ServiceContainer {
 
   @service()
   async resetPassword(usernameOrEmail) {
-    const user = await this.UserRepository.findOne({
-      query: {
-        $or: [
-          {
-            username: usernameOrEmail,
-          },
-          {
-            email: usernameOrEmail,
-          },
-        ],
-      },
-    });
+    const user = await this.UserRepository.findOneByUsername(usernameOrEmail);
 
     if (!user) {
       throw Boom.badRequest('User not found!');
     }
 
-    const resetPassword = {
-      token: crypto.randomBytes(20).toString('hex'),
-      resetAt: new Date(),
-    };
-
-    const updateResult = await this.UserRepository.updateOne({
-      query: { _id: user._id },
-      update: {
-        $set: { resetPassword },
-      },
-    });
+    const updatedUser = await this.UserRepository.resetPassword(user._id);
 
     this.Mail.send({
       to: user.email,
@@ -343,7 +292,7 @@ class User extends ServiceContainer {
       template: this.emailTemplates.forgotPassword,
       context: {
         user,
-        resetPassword,
+        resetPassword: updatedUser.resetPassword,
         rootURL: this.rootURL,
       },
     });
@@ -351,9 +300,9 @@ class User extends ServiceContainer {
     return {
       user: {
         ...user,
-        resetPassword,
+        resetPassword: updatedUser.resetPassword,
       },
-      updateResult,
+      updatedUser,
     };
   }
 

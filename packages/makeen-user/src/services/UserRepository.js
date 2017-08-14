@@ -1,5 +1,9 @@
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import { Repository } from 'makeen-mongodb';
+import { decorators } from 'octobus.js';
+
+const { service } = decorators;
 
 class UserRepository extends Repository {
   static hashPassword({ password, salt }) {
@@ -17,6 +21,66 @@ class UserRepository extends Repository {
   setServiceBus(serviceBus) {
     super.setServiceBus(serviceBus);
     this.User = serviceBus.extract('User');
+  }
+
+  @service()
+  findOneByUsername(username) {
+    return this.findOne({
+      query: {
+        $or: [
+          {
+            username,
+          },
+          {
+            email: username,
+          },
+        ],
+      },
+    });
+  }
+
+  @service()
+  findOneByUsernameOrEmail({ username, email }) {
+    return this.findOne({
+      query: {
+        $or: [
+          {
+            username,
+          },
+          {
+            email,
+          },
+        ],
+      },
+    });
+  }
+
+  @service()
+  updatePassword({ userId, password }) {
+    return this.updateOne({
+      query: { _id: userId },
+      update: {
+        $set: {
+          resetPassword: {},
+          password,
+        },
+      },
+    });
+  }
+
+  @service()
+  async resetPassword(userId) {
+    const resetPassword = {
+      token: crypto.randomBytes(20).toString('hex'),
+      resetAt: new Date(),
+    };
+
+    return this.UserRepository.updateOne({
+      query: { _id: userId },
+      update: {
+        $set: { resetPassword },
+      },
+    });
   }
 
   save(data) {
