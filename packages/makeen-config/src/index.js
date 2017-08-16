@@ -22,14 +22,20 @@ class Config {
     return Promise.all(keys.map(key => this.get(key, undefined, ttl)));
   }
 
-  async get(key, defaultValue, ttl) {
+  async get(key, defaultValue, options = {}) {
+    const { ttl, ignoreStores } = {
+      ignoreStores: [],
+      ...options,
+    };
+
     invariant(key, 'Key is required!');
 
     if (this.cache.has(key)) {
       return this.cache.get(key);
     }
 
-    const store = await this.stores.reduce(
+    const filteredStores = this.stores.filter(s => !ignoreStores.includes(s));
+    const store = await filteredStores.reduce(
       (acc, currentStore) =>
         acc.then(async foundStore => {
           if (foundStore) {
