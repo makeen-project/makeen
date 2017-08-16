@@ -18,9 +18,9 @@ class EnvStore extends MemoryStore {
     return super.has(EnvStore.makeKey(this.prefix, key));
   }
 
-  get(key) {
+  get(key, nextStore) {
     if (!this.has(key)) {
-      return undefined;
+      return nextStore.get(key);
     }
 
     const value = super.get(EnvStore.makeKey(this.prefix, key));

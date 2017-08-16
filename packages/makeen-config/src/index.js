@@ -11,7 +11,13 @@ class Config {
   }
 
   addStore(store) {
-    this.stores.unshift(store);
+    const nextStore = this.stores[0] || {
+      get: () => undefined,
+    };
+
+    this.stores.unshift({
+      get: key => store.get(key, nextStore),
+    });
   }
 
   async multiGet(keys, ttl) {
@@ -22,38 +28,22 @@ class Config {
     return Promise.all(keys.map(key => this.get(key, undefined, ttl)));
   }
 
-  async get(key, defaultValue, options = {}) {
-    const { ttl, ignoreStores } = {
-      ignoreStores: [],
-      ...options,
-    };
-
+  async get(key, defaultValue, ttl) {
     invariant(key, 'Key is required!');
 
     if (this.cache.has(key)) {
       return this.cache.get(key);
     }
 
-    const filteredStores = this.stores.filter(s => !ignoreStores.includes(s));
-    const store = await filteredStores.reduce(
-      (acc, currentStore) =>
-        acc.then(async foundStore => {
-          if (foundStore) {
-            return foundStore;
-          }
+    const value = await this.stores[0].get(key);
 
-          return (await currentStore.has(key)) ? currentStore : false;
-        }),
-      Promise.resolve(false),
-    );
-
-    if (store) {
-      const value = await store.get(key);
-      this.cache.set(key, value, ttl);
-      return value;
+    if (value === undefined) {
+      return defaultValue;
     }
 
-    return defaultValue;
+    this.cache.set(key, value, ttl);
+
+    return value;
   }
 
   clearCache(key) {

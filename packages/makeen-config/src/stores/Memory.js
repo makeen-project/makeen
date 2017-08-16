@@ -9,7 +9,11 @@ class MemoryStore {
     return _.has(this.backend, key);
   }
 
-  get(key) {
+  get(key, nextStore) {
+    if (!this.has(key)) {
+      return nextStore.get(key);
+    }
+
     return _.get(this.backend, key);
   }
 

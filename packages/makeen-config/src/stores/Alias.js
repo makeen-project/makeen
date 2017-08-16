@@ -37,14 +37,16 @@ class Alias {
     return this.hasAlias(key) || this.embedsAlias(key);
   }
 
-  async get(key) {
+  async get(key, nextStore) {
+    if (!this.has(key)) {
+      return nextStore.get(key);
+    }
+
     if (this.hasAlias(key)) {
       return this.backend.get(this.aliases[key]);
     }
 
-    const value = await this.backend.get(key, undefined, {
-      ignoreStores: [this],
-    });
+    const value = await nextStore.get(key);
 
     const nestedKeys = this.getNestedKeys(key);
 
