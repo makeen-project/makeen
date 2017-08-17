@@ -75,19 +75,19 @@ class User extends ServiceContainer {
       throw new FailedLogin('Unable to find user account!');
     }
 
-    if (user.labels.includes('isDeleted')) {
+    if (user.isDeleted) {
       throw new FailedLogin('User not found!');
     }
 
-    if (!user.labels.includes('isActive')) {
+    if (!user.isActive) {
       throw new FailedLogin('User is not active!');
     }
 
-    if (!account.labels.includes('isConfirmed')) {
+    if (!account.isConfirmed) {
       throw new FailedLogin('Account is not confirmed!');
     }
 
-    if (!account.labels.includes('isActive')) {
+    if (!account.isActive) {
       throw new FailedLogin('Account is not active!');
     }
 
@@ -134,7 +134,7 @@ class User extends ServiceContainer {
       'updatedAt',
       'createdAt',
       'token',
-      'labels',
+      'isActive',
       'lastLogin',
       'roles',
     ]);
@@ -268,11 +268,17 @@ class User extends ServiceContainer {
         'email',
         'username',
         'roles',
-        'labels',
+        'isActive',
         'createdAt',
         'updatedAt',
       ]),
-      account: pick(account, ['labels', '_id', 'updatedAt', 'createdAt']),
+      account: pick(account, [
+        'isConfirmed',
+        'isActive',
+        '_id',
+        'updatedAt',
+        'createdAt',
+      ]),
     };
   }
 

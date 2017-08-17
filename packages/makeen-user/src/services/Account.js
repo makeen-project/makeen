@@ -18,11 +18,11 @@ class Account extends ServiceContainer {
       throw new Error('Account not found!');
     }
 
-    if (account.labels.includes('isConfirmed')) {
+    if (account.isConfirmed) {
       throw new Error('Account is already confirmed!');
     }
 
-    account.labels.push('isConfirmed');
+    account.isConfirmed = true;
 
     return this.AccountRepository.replaceOne(account);
   }
@@ -43,7 +43,7 @@ class Account extends ServiceContainer {
 
     const account = await this.AccountRepository.findById(user.accountId);
 
-    if (account.labels.includes('isConfirmed')) {
+    if (account.isConfirmed) {
       throw new Error('Account is already confirmed!');
     }
 
