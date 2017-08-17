@@ -9,6 +9,6 @@ export const sanitizeUserData = user => ({
     'accountId',
     'lastLogin',
     'roles',
-    'labels',
+    'isActive',
   ]),
 });

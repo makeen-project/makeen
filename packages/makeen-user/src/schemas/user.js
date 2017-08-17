@@ -2,8 +2,7 @@ import Joi from 'joi';
 import * as constants from '../constants/user';
 
 export default {
-  _id: Joi.object(),
-  accountId: Joi.object().required(),
+  accountId: Joi.any().required(),
 
   username: Joi.string().required(),
   name: Joi.string().required(),
@@ -11,9 +10,8 @@ export default {
   password: Joi.string().required(),
   salt: Joi.string(),
 
-  labels: Joi.array()
-    .items(Joi.string().valid(constants.labels))
-    .default(constants.defaultLabels),
+  isActive: Joi.boolean().default(false),
+  isDeleted: Joi.boolean(),
   roles: Joi.array()
     .items(Joi.string().valid(constants.roles))
     .default(constants.defaultRoles),

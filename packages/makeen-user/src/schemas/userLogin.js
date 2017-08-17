@@ -1,8 +1,7 @@
 import Joi from 'joi';
 
 export default {
-  _id: Joi.object(),
-  userId: Joi.object().required(),
+  userId: Joi.any().required(),
   ip: Joi.string().required(),
   browser: Joi.string().required(),
   os: Joi.string().required(),

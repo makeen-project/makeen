@@ -1,7 +1,6 @@
 import Joi from 'joi';
 
 export default {
-  _id: Joi.object(),
   name: Joi.string().required(),
   permissions: Joi.array().items(Joi.string().required()).default([]),
   createdAt: Joi.date(),
