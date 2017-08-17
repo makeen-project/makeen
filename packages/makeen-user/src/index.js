@@ -42,6 +42,7 @@ class User extends Module {
         userSignUp: UserSignupTemplate,
       }),
     rootURL: Joi.string().required(),
+    storageModule: Joi.string().default('makeen:mongoDb'),
   };
 
   name = 'makeen:user';
@@ -84,13 +85,14 @@ class User extends Module {
     mockUserConfig,
     emailTemplates,
     rootURL,
+    storageModule,
   }) {
     const [
       { createRepository, bindRepository },
       { createServiceBus },
       { addRouter },
     ] = await this.dependencies([
-      'makeen:mongoDb',
+      storageModule,
       'makeen:octobus',
       'makeen:router',
     ]);
@@ -100,27 +102,29 @@ class User extends Module {
 
     this.serviceBus = createServiceBus(this.name, [{ matcher: /^mailer/ }]);
 
-    this.export({
-      ...this.serviceBus.registerServices({
-        User: new UserService({
-          jwtConfig: {
-            key: jwtSecret,
-            options: jwtConfig,
-          },
-          emailTemplates,
-          rootURL,
-        }),
-        UserRepository: bindRepository(new UserRepositoryService(schemas.user)),
-        Account: new AccountService(),
-        AccountRepository: createRepository({
-          name: 'Account',
-          schema: schemas.account,
-        }),
-        UserLoginRepository: createRepository({
-          name: 'UserLogin',
-          schema: schemas.userLogin,
-        }),
+    const services = this.serviceBus.registerServices({
+      User: new UserService({
+        jwtConfig: {
+          key: jwtSecret,
+          options: jwtConfig,
+        },
+        emailTemplates,
+        rootURL,
       }),
+      UserRepository: bindRepository(new UserRepositoryService(schemas.user)),
+      Account: new AccountService(),
+      AccountRepository: createRepository({
+        name: 'Account',
+        schema: schemas.account,
+      }),
+      UserLoginRepository: createRepository({
+        name: 'UserLogin',
+        schema: schemas.userLogin,
+      }),
+    });
+
+    this.export({
+      ...services,
       gqlMiddlewares,
       jwtMiddleware: this.jwtMiddleware,
     });
