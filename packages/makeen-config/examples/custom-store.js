@@ -8,8 +8,8 @@ class CustomStore extends MemoryStore {
     super.set(key, typeof value === 'number' ? value + 1 : value);
   }
 
-  async get(key) {
-    const value = await MemoryStore.prototype.get.call(this, key);
+  async get(key, nextStore) {
+    const value = await MemoryStore.prototype.get.call(this, key, nextStore);
     await new Promise(resolve => setTimeout(resolve), 1000);
     return value;
   }

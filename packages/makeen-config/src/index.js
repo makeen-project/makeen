@@ -5,6 +5,8 @@ import * as stores from './stores';
 import * as caches from './cache';
 
 class Config {
+  static notFoundValue = () => {};
+
   constructor(cache = new MemoryCache()) {
     this.stores = [];
     this.cache = cache;
@@ -12,7 +14,7 @@ class Config {
 
   addStore(store) {
     const nextStore = this.stores[0] || {
-      get: () => undefined,
+      get: () => this.constructor.notFoundValue,
     };
 
     this.stores.unshift({
@@ -37,7 +39,7 @@ class Config {
 
     const value = await this.stores[0].get(key);
 
-    if (value === undefined) {
+    if (value === this.constructor.notFoundValue) {
       return defaultValue;
     }
 
