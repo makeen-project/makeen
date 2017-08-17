@@ -1,6 +1,6 @@
-import inject from 'makeen/build/middlewares/inject';
+import injectServices from 'makeen/build/middlewares/injectServices';
 
-export default inject({
+export default injectServices({
   FileRepository: 'makeen:fileStorage.FileRepository',
   File: 'makeen:fileStorage.File',
 });
