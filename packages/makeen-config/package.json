@@ -1,6 +1,6 @@
 {
   "name": "makeen-config",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Makeen configuration strategy",
   "main": "build/index.js",
   "scripts": {},
