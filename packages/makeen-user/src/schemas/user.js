@@ -10,7 +10,7 @@ export default {
   password: Joi.string().required(),
   salt: Joi.string(),
 
-  isActive: Joi.boolean().default(false),
+  isActive: Joi.boolean().default(true),
   isDeleted: Joi.boolean(),
   roles: Joi.array()
     .items(Joi.string().valid(constants.roles))

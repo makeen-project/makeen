@@ -11,7 +11,7 @@ export default createMiddleware({
     jwt(params),
     async (req, res, next) => {
       const { UserRepository, AccountRepository, User } = req.app.modules.get(
-        'makeen:user',
+        'makeen.user',
       );
 
       try {

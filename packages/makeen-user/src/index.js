@@ -42,13 +42,13 @@ class User extends Module {
         userSignUp: UserSignupTemplate,
       }),
     rootURL: Joi.string().required(),
-    storageModule: Joi.string().default('makeen:mongoDb'),
+    storageModule: Joi.string().default('makeen.mongoDb'),
   };
 
-  name = 'makeen:user';
+  name = 'makeen.user';
 
   hooks = {
-    'makeen:router:load': () => {},
+    'makeen.router.load': () => {},
   };
 
   initialize({ jwtSecret }) {
@@ -93,14 +93,16 @@ class User extends Module {
       { addRouter },
     ] = await this.dependencies([
       storageModule,
-      'makeen:octobus',
-      'makeen:router',
+      'makeen.octobus',
+      'makeen.router',
     ]);
     const routerConfig = {
       jwtMiddleware: this.jwtMiddleware,
     };
 
-    this.serviceBus = createServiceBus(this.name, [{ matcher: /^mailer/ }]);
+    this.serviceBus = createServiceBus(this.name, [
+      { matcher: /^makeen\.mailer/ },
+    ]);
 
     const services = this.serviceBus.registerServices({
       User: new UserService({

@@ -24,7 +24,7 @@ class Gql extends Module {
     middlewarePivot: Joi.string().default('isMethod'),
     configureSchema: Joi.func().default(identity),
   };
-  name = 'makeen:graphQL';
+  name = 'makeen.graphQL';
   typeDefs = [];
   resolvers = mainResolvers;
   middlewares = {};
@@ -128,7 +128,7 @@ class Gql extends Module {
         typeDefs: this.typeDefs,
         resolvers,
         logger: {
-          log: err => this.app.modules.get('makeen:logger').log.error(err),
+          log: err => this.app.modules.get('makeen.logger').log.error(err),
         },
         allowUndefinedInResolve: false,
       }),

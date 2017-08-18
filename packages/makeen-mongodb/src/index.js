@@ -32,10 +32,10 @@ class MongoDB extends Module {
     defaultConnection: Joi.string(),
   };
 
-  name = 'makeen:mongoDb';
+  name = 'makeen.mongoDb';
 
   hooks = {
-    'makeen:graphQL:buildContext': ({ context }) => {
+    'makeen.graphQL.buildContext': ({ context }) => {
       const { fromMongo, toMongo } = helpers;
 
       Object.assign(context, {

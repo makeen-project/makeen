@@ -101,11 +101,11 @@ class Module {
   }
 
   createHook(hook, handler, context) {
-    return this.manager.run(`${this.name}:${hook}`, handler, context);
+    return this.manager.run(`${this.name}.${hook}`, handler, context);
   }
 
   addHook(moduleName, hook, handler = () => {}) {
-    this.hooks[`${moduleName}:${hook}`] = handler;
+    this.hooks[`${moduleName}.${hook}`] = handler;
   }
 }
 

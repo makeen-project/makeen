@@ -2,13 +2,13 @@ export default {
   Query: {
     users: (_, args, { app, fromMongo }) =>
       app.modules
-        .get('makeen:user')
+        .get('makeen.user')
         .UserRepository.findMany()
         .then(c => c.map(fromMongo).toArray()),
   },
   Mutation: {
     login: async (_, { username, password }, { app, req, fromMongo }) => {
-      const { User, UserLoginRepository } = app.modules.get('makeen:user');
+      const { User, UserLoginRepository } = app.modules.get('makeen.user');
 
       const result = await User.login({ username, password });
       const user = await User.dump(result);

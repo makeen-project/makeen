@@ -18,7 +18,7 @@ class Octobus extends Module {
     ),
   };
 
-  name = 'makeen:octobus';
+  name = 'makeen.octobus';
 
   constructor(...args) {
     super(...args);

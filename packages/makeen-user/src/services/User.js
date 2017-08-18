@@ -23,7 +23,7 @@ class User extends ServiceContainer {
     super.setServiceBus(serviceBus);
     this.UserRepository = serviceBus.extract('UserRepository');
     this.AccountRepository = serviceBus.extract('AccountRepository');
-    this.Mail = serviceBus.extract('mailer.Mail');
+    this.Mail = serviceBus.extract('makeen.mailer.Mail');
   }
 
   @service()

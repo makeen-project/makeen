@@ -13,7 +13,7 @@ class LoggerModule extends Module {
     printDependencyGraph: Joi.boolean().default(true),
     printMiddlewares: Joi.boolean().default(true),
   };
-  name = 'makeen:logger';
+  name = 'makeen.logger';
 
   initialize({
     logsDir,

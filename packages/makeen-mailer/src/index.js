@@ -17,7 +17,7 @@ class Mailer extends Module {
     middlewarePivot: Joi.any().required(),
   };
 
-  name = 'makeen:mailer';
+  name = 'makeen.mailer';
 
   initialize({ middlewarePivot }) {
     this.app.middlewares.insert(
@@ -36,7 +36,7 @@ class Mailer extends Module {
   }
 
   async setup({ transport, emailsDir, saveToDisk }) {
-    const { registerServices } = await this.dependency('makeen:octobus');
+    const { registerServices } = await this.dependency('makeen.octobus');
     const { Mail } = registerServices(this, {
       Mail: new MailService({
         transport,

@@ -4,7 +4,7 @@ export default {
     try {
       if (!req.user) {
         req.user = await req.app.modules
-          .get('makeen:user')
+          .get('makeen.user')
           .UserRepository.findOne({
             query,
           });
