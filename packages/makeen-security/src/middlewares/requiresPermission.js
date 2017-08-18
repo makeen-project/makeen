@@ -9,11 +9,10 @@ export default (
 ) => async (req, res, next) => {
   const subject = options.getSubject(req);
   const object = options.getObject(req);
+  const { Security } = req.app.modules.get('makeen.security');
 
   try {
-    const isAllowed = await req.app.modules
-      .get('security')
-      .Security.can({ subject, permission, object });
+    const isAllowed = await Security.can({ subject, permission, object });
 
     if (!isAllowed) {
       throw Boom.unauthorized(`Missing "${permission}" permission!`);
