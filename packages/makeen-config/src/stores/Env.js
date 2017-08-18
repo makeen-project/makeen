@@ -18,12 +18,12 @@ class EnvStore extends MemoryStore {
     return super.has(EnvStore.makeKey(this.prefix, key));
   }
 
-  get(key, nextStore) {
+  async get(key, nextStore) {
     if (!this.has(key)) {
       return nextStore.get(key);
     }
 
-    const value = super.get(EnvStore.makeKey(this.prefix, key));
+    const value = this.backend[EnvStore.makeKey(this.prefix, key)];
 
     try {
       return JSON.parse(value);
