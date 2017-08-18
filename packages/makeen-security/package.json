@@ -1,6 +1,6 @@
 {
   "name": "makeen-security",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Makeen security",
   "main": "build/index.js",
   "scripts": {},
