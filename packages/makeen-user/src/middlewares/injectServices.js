@@ -1,9 +1,9 @@
-import injectServices from 'makeen/build/middlewares/injectServices';
+import inject from 'makeen/build/middlewares/inject';
 
-export default injectServices({
-  Account: 'makeen.user.Account',
-  AccountRepository: 'makeen.user.AccountRepository',
-  User: 'makeen.user.User',
-  UserRepository: 'makeen.user.UserRepository',
-  UserLoginRepository: 'makeen.user.UserLoginRepository',
-});
+export default inject('makeen.user')([
+  'Account',
+  'AccountRepository',
+  'User',
+  'UserRepository',
+  'UserLoginRepository',
+]);

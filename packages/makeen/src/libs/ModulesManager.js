@@ -19,8 +19,10 @@ class ModulesManager extends EventEmitter {
     return this;
   }
 
-  get(path, defaultValue) {
-    return getPath(this.exportMap, path, defaultValue);
+  get(moduleName, path, defaultValue) {
+    return path
+      ? getPath(this.exportMap[moduleName], path, defaultValue)
+      : this.exportMap[moduleName];
   }
 
   add(module) {
