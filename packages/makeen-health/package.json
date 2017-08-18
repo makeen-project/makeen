@@ -1,6 +1,6 @@
 {
   "name": "makeen-health",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Makeen health module.",
   "main": "build/index.js",
   "repository": {
@@ -16,6 +16,6 @@
   "dependencies": {
     "express": "4.15.3",
     "joi": "10.5.1",
-    "makeen": "^1.4.0"
+    "makeen": "^1.4.1"
   }
 }
