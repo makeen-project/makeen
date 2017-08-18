@@ -94,7 +94,7 @@ let names;
 
 class NamesCollector extends Module {
   async setup() {
-    names = await this.manager.run('collectNames', module => module.name);
+    names = await this.createHook('collectNames', module => module.name);
   }
 }
 
@@ -109,7 +109,7 @@ We're creating a new instance of a ModulesManager and adding two dummy modules. 
 The signature of a command is this:
 
 ```js
-const returnValue = this.manager.run(commandName, command, context);
+const returnValue = this.createHook(commandName, command, context);
 ```
 
 - commandName - is a string and the name is important, mainly because other modules will be able to define their own logic associated with the command name; examples of command names: `router:load`, `graphQL:buildContext`
@@ -136,7 +136,7 @@ class Module1 extends Module {
 
 class NamesCollector extends Module {
   async setup() {
-    names = await this.manager.run('collectNames', module => module.name);
+    names = await this.createHook('collectNames', module => module.name);
   }
 }
 

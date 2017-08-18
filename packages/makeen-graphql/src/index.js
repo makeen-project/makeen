@@ -144,7 +144,7 @@ class Gql extends Module {
       addMiddleware,
     } = this;
 
-    await this.manager.run('graphQL:load', collectFromModule, {
+    await this.createHook('load', collectFromModule, {
       addTypeDefs,
       addTypeDefsByPath,
       addResolvers,
@@ -153,7 +153,7 @@ class Gql extends Module {
 
     const context = {};
 
-    await this.manager.run('graphql:buildContext', () => {}, {
+    await this.createHook('buildContext', () => {}, {
       context,
     });
 

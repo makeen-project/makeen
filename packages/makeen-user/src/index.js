@@ -48,7 +48,7 @@ class User extends Module {
   name = 'makeen:user';
 
   hooks = {
-    'router:load': () => {},
+    'makeen:router:load': () => {},
   };
 
   initialize({ jwtSecret }) {

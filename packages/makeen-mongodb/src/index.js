@@ -35,7 +35,7 @@ class MongoDB extends Module {
   name = 'makeen:mongoDb';
 
   hooks = {
-    'graphql:buildContext': ({ context }) => {
+    'makeen:graphQL:buildContext': ({ context }) => {
       const { fromMongo, toMongo } = helpers;
 
       Object.assign(context, {

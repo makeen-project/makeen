@@ -31,8 +31,8 @@ class Security extends Module {
       { registerServices },
     ] = await this.dependencies(['makeen:mongoDb', 'makeen:octobus']);
 
-    await this.manager.run(
-      'permissions:define',
+    await this.createHook(
+      'definePermissions',
       module => {
         const modulePermissions = get(module, 'security.permissions');
         if (modulePermissions) {

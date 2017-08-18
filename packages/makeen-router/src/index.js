@@ -55,7 +55,7 @@ class Router extends Module {
     const { addRouter } = this;
 
     if (autoload) {
-      await this.manager.run('router:load', this.loadModuleRouter, {
+      await this.createHook('load', this.loadModuleRouter, {
         addRouter,
       });
     }

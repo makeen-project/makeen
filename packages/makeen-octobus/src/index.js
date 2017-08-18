@@ -60,12 +60,12 @@ class Octobus extends Module {
       messageStore,
     } = this;
 
-    await this.manager.run('octobus:createServiceBus', () => {}, {
+    await this.createHook('createServiceBus', () => {}, {
       create: createServiceBus,
     });
 
-    await this.manager.run(
-      'services:register',
+    await this.createHook(
+      'registerServices',
       module => {
         if (module.services) {
           this.registerServices(module, module.services);
