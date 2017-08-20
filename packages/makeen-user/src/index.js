@@ -43,6 +43,13 @@ class User extends Module {
       }),
     rootURL: Joi.string().required(),
     storageModule: Joi.string().default('makeen.mongoDb'),
+    shemas: Joi.object()
+      .keys({
+        account: Joi.object().required(),
+        user: Joi.object().required(),
+        userLogin: Joi.object().required(),
+      })
+      .default(schemas),
   };
 
   name = 'makeen.user';
@@ -86,6 +93,11 @@ class User extends Module {
     emailTemplates,
     rootURL,
     storageModule,
+    schemas: {
+      user: userSchema,
+      account: accountSchema,
+      userLogin: userLoginSchema,
+    },
   }) {
     const [
       { createRepository, bindRepository },
@@ -113,15 +125,15 @@ class User extends Module {
         emailTemplates,
         rootURL,
       }),
-      UserRepository: bindRepository(new UserRepositoryService(schemas.user)),
+      UserRepository: bindRepository(new UserRepositoryService(userSchema)),
       Account: new AccountService(),
       AccountRepository: createRepository({
         name: 'Account',
-        schema: schemas.account,
+        schema: accountSchema,
       }),
       UserLoginRepository: createRepository({
         name: 'UserLogin',
-        schema: schemas.userLogin,
+        schema: userLoginSchema,
       }),
     });
 
