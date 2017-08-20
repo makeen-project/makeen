@@ -1,6 +1,6 @@
 {
   "name": "makeen-user",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "Makeen user module providing authentication, authorization, users and accounts management.",
   "main": "build/index.js",
   "repository": {
