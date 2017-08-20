@@ -43,7 +43,7 @@ class User extends Module {
       }),
     rootURL: Joi.string().required(),
     storageModule: Joi.string().default('makeen.mongoDb'),
-    shemas: Joi.object()
+    schemas: Joi.object()
       .keys({
         account: Joi.object().required(),
         user: Joi.object().required(),
