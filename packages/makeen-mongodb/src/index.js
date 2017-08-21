@@ -7,22 +7,11 @@ import Repository from './libs/Repository';
 import * as helpers from './libs/helpers';
 
 class MongoDB extends Module {
-  static connect({ host, port, db }) {
-    return MongoClient.connect(`mongodb://${host}:${port}/${db}`);
-  }
-
   static configSchema = {
     connections: Joi.array().items(
       Joi.object().keys({
         name: Joi.string().required(),
-        config: Joi.alternatives().try(
-          Joi.string().required(),
-          Joi.object().keys({
-            host: Joi.string().required(),
-            port: Joi.number().required(),
-            db: Joi.string().required(),
-          }),
-        ),
+        url: Joi.string().required(),
         Store: Joi.object().default(
           () => decorators.withTimestamps(MongoStore),
           'Mongo store',
@@ -100,8 +89,8 @@ class MongoDB extends Module {
   }
 
   async createConnection(options) {
-    const { name, Store, config } = options;
-    const db = await MongoDB.connect(config);
+    const { name, Store, url } = options;
+    const db = await MongoClient.connect(url);
     const refManager = new RefManager(db);
 
     const connection = {
