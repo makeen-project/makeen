@@ -10,6 +10,7 @@ import { Module } from 'makeen';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import merge from 'lodash/merge';
 import { makeExecutableSchema } from 'graphql-tools';
+import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 import mainResolvers from './graphql/resolvers';
 
 class Gql extends Module {
@@ -19,6 +20,9 @@ class Gql extends Module {
       resolvers: Joi.array().default([]),
     }),
     graphiql: Joi.object().keys({
+      enabled: Joi.boolean().default(true),
+    }),
+    voyager: Joi.object().keys({
       enabled: Joi.boolean().default(true),
     }),
     middlewarePivot: Joi.string().default('isMethod'),
@@ -182,7 +186,13 @@ class Gql extends Module {
         params: {
           endpointURL: '/graphql',
         },
-        enabled: this.getConfig('graphiql.enabled', false),
+        enabled: this.getConfig('graphiql.enabled'),
+      },
+      {
+        id: 'voyager',
+        path: '/voyager',
+        factory: () => voyagerMiddleware({ endpointUrl: '/graphql' }),
+        enabled: this.getConfig('voyager.enabled'),
       },
     );
 
