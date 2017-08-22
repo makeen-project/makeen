@@ -1,6 +1,6 @@
 {
   "name": "makeen-graphql",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Makeen GraphQL module that integrates apollo and helps you publish a GraphQL API in the fastest way possible.",
   "main": "build/index.js",
   "repository": {
