@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import get from 'lodash/get';
+import flatten from 'lodash/flatten';
 import { Module } from 'makeen';
 import PermissionsManager from './libs/PermissionsManager';
 import * as schemas from './schemas';
@@ -11,25 +12,48 @@ class Security extends Module {
   };
 
   name = 'makeen.security';
-
-  initialize({ extractUserPermissions }) {
-    const extractor = user =>
-      this.services.Security.getUserPermissions({
+  hooks = {
+    'makeen.security.permissionsExtractor': ({ security }) => user =>
+      security.getUserPermissions({
         userId: user._id,
-      });
+      }),
+  };
 
-    this.permissionsManager = new PermissionsManager({
-      extractor: extractUserPermissions || extractor,
-    });
+  // eslint-disable-next-line class-methods-use-this
+  buildExtractor(extractors) {
+    return async user => {
+      const permissionsLists = await Promise.all(
+        extractors.map(extractor => extractor(user)),
+      );
+      return flatten(permissionsLists);
+    };
   }
 
   async setup() {
-    const { permissionsManager } = this;
-
     const [
       { createRepository },
       { registerServices },
     ] = await this.dependencies(['makeen.mongoDb', 'makeen.octobus']);
+
+    const services = registerServices(this, {
+      GroupRepository: createRepository({
+        name: 'SecurityGroup',
+        schema: schemas.group,
+      }),
+      UserRepository: createRepository({
+        name: 'SecurityUser',
+        schema: schemas.user,
+      }),
+      Security: new SecurityServiceContainer(),
+    });
+
+    const extractors = await this.createHook('permissionsExtractor', () => {}, {
+      security: services.Security,
+    });
+
+    const permissionsManager = new PermissionsManager({
+      extractor: this.buildExtractor(extractors),
+    });
 
     await this.createHook(
       'definePermissions',
@@ -49,20 +73,8 @@ class Security extends Module {
       },
     );
 
-    this.services = registerServices(this, {
-      GroupRepository: createRepository({
-        name: 'SecurityGroup',
-        schema: schemas.group,
-      }),
-      UserRepository: createRepository({
-        name: 'SecurityUser',
-        schema: schemas.user,
-      }),
-      Security: new SecurityServiceContainer(this.permissionsManager),
-    });
-
     this.export({
-      ...this.services,
+      ...services,
       permissionsManager,
     });
   }
