@@ -32,6 +32,7 @@ class Gql extends Module {
   typeDefs = [];
   resolvers = mainResolvers;
   middlewares = {};
+  gqlContext = {};
 
   constructor(...args) {
     super(...args);
@@ -40,6 +41,40 @@ class Gql extends Module {
     this.addTypeDefsByPath = this.addTypeDefsByPath.bind(this);
     this.addResolvers = this.addResolvers.bind(this);
     this.addMiddleware = this.addMiddleware.bind(this);
+  }
+
+  async setup() {
+    const {
+      collectFromModule,
+      addTypeDefs,
+      addTypeDefsByPath,
+      addResolvers,
+      addMiddleware,
+    } = this;
+
+    await this.createHook('load', collectFromModule, {
+      addTypeDefs,
+      addTypeDefsByPath,
+      addResolvers,
+      addMiddleware,
+    });
+
+    await this.createHook('buildContext', () => {}, {
+      context: this.gqlContext,
+    });
+
+    const schema = this.buildSchema();
+
+    this.app.middlewares.insertBefore(
+      this.getConfig('middlewarePivot'),
+      this.getGraphQLMiddleware(schema),
+      this.getGraphiQLMiddleware(),
+      this.getVoyagerMiddleware(),
+    );
+
+    this.export({
+      schema,
+    });
   }
 
   addTypeDefs(typeDefs) {
@@ -139,66 +174,42 @@ class Gql extends Module {
     );
   }
 
-  async setup() {
-    const {
-      collectFromModule,
-      addTypeDefs,
-      addTypeDefsByPath,
-      addResolvers,
-      addMiddleware,
-    } = this;
-
-    await this.createHook('load', collectFromModule, {
-      addTypeDefs,
-      addTypeDefsByPath,
-      addResolvers,
-      addMiddleware,
-    });
-
-    const context = {};
-
-    await this.createHook('buildContext', () => {}, {
-      context,
-    });
-
-    const schema = this.buildSchema();
-
-    this.app.middlewares.insertBefore(
-      this.getConfig('middlewarePivot'),
-      {
-        id: 'graphql',
-        path: '/graphql',
-        factory: graphqlExpress,
-        params: req => ({
-          schema,
-          context: {
-            ...context,
-            req,
-            app: req.app,
-            user: req.user,
-          },
-        }),
-      },
-      {
-        id: 'graphiql',
-        path: '/graphiql',
-        factory: graphiqlExpress,
-        params: {
-          endpointURL: '/graphql',
+  getGraphQLMiddleware(schema) {
+    return {
+      id: 'graphql',
+      path: '/graphql',
+      factory: graphqlExpress,
+      params: req => ({
+        schema,
+        context: {
+          ...this.gqlContext,
+          req,
+          app: req.app,
+          user: req.user,
         },
-        enabled: this.getConfig('graphiql.enabled'),
-      },
-      {
-        id: 'voyager',
-        path: '/voyager',
-        factory: () => voyagerMiddleware({ endpointUrl: '/graphql' }),
-        enabled: this.getConfig('voyager.enabled'),
-      },
-    );
+      }),
+    };
+  }
 
-    this.export({
-      schema,
-    });
+  getGraphiQLMiddleware() {
+    return {
+      id: 'graphiql',
+      path: '/graphiql',
+      factory: graphiqlExpress,
+      params: {
+        endpointURL: '/graphql',
+      },
+      enabled: this.getConfig('graphiql.enabled'),
+    };
+  }
+
+  getVoyagerMiddleware() {
+    return {
+      id: 'voyager',
+      path: '/voyager',
+      factory: () => voyagerMiddleware({ endpointUrl: '/graphql' }),
+      enabled: this.getConfig('voyager.enabled'),
+    };
   }
 }
 
