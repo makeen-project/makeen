@@ -57,7 +57,7 @@ class Security extends ServiceContainer {
 
     let groupsPermissions = [];
 
-    if (includeGroups && user.groupIds.length) {
+    if (includeGroups && Array.isArray(user.groupIds) && user.groupIds.length) {
       const groups = await GroupRepository.findMany({
         query: {
           _id: {
