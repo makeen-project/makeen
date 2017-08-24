@@ -37,13 +37,17 @@ class Alias {
     return this.hasAlias(key) || this.embedsAlias(key);
   }
 
+  getBackendValue(key) {
+    return typeof key === 'string' ? this.backend.get(key) : key(this.backend);
+  }
+
   async get(key, nextStore) {
     if (!this.has(key)) {
       return nextStore.get(key);
     }
 
     if (this.hasAlias(key)) {
-      return this.backend.get(this.aliases[key]);
+      return this.getBackendValue(this.aliases[key]);
     }
 
     const value = await nextStore.get(key);
@@ -53,7 +57,7 @@ class Alias {
     if (nestedKeys.length) {
       await Promise.all(
         nestedKeys.map(async nestedKey => {
-          const val = await this.backend.get(nestedKey);
+          const val = await this.getBackendValue(nestedKey);
           set(value, nestedKey.substr(key.length + 1), val);
         }),
       );
