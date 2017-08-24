@@ -51,7 +51,7 @@ export default ({
           fields: Joi.object().default({}),
         },
       }),
-      wrapHandler(req => {
+      wrapHandler(async req => {
         const params = pick(req.query, ['fields', 'orderBy']);
         params.query = toBSON(req.query.query);
 
@@ -63,7 +63,9 @@ export default ({
           params.limit = parseInt(req.query.limit, 10);
         }
 
-        return repository.findMany(params).toArray();
+        const cursor = await repository.findMany(params);
+
+        return cursor.toArray();
       }),
     )
     .post(wrapHandler(req => repository.createOne(toBSON(req.body))));
