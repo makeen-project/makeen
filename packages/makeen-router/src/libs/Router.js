@@ -16,6 +16,7 @@ class Router {
   };
 
   constructor() {
+    this.params = {};
     this.routes = [];
     this.routers = {};
     this.loadRoutes();
@@ -28,6 +29,7 @@ class Router {
       if (typeof this[propr] === 'function' && this[propr].isRoute) {
         const { definition } = this[propr];
         this.addRoute({
+          id: propr,
           path: `/${propr}`,
           ...definition,
           handler: this[propr].bind(this),
@@ -36,8 +38,9 @@ class Router {
     }
   }
 
-  addRoute({ method = 'GET', path = '/', handler, middlewares = [] }) {
+  addRoute({ id, method = 'GET', path = '/', handler, middlewares = [] }) {
     this.routes.push({
+      id,
       method,
       path,
       handler: Router.wrapHandler(handler),
@@ -45,6 +48,10 @@ class Router {
     });
 
     return this;
+  }
+
+  addParam(paramName, handler) {
+    this.params[paramName] = Router.wrapHandler(handler);
   }
 
   addRouter(path, router) {
@@ -76,6 +83,10 @@ class Router {
     if (this.middlewares.length) {
       this.router.use(this.middlewares);
     }
+
+    Object.keys(this.params).forEach(paramName => {
+      this.router.param(paramName, this.params[paramName]);
+    });
 
     this.getRoutes().reduce(
       (expressRouter, { method, path, middlewares, handler }) => {
