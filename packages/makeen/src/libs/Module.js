@@ -7,10 +7,15 @@ class Module {
   constructor(config = {}) {
     this.name = config.name || this.name || camelCase(this.constructor.name);
     this.config = this.constructor.configSchema
-      ? Joi.attempt(config, {
-        name: Joi.string(),
-        ...this.constructor.configSchema,
-      })
+      ? Joi.attempt(
+          config,
+          Joi.object()
+            .keys({
+              name: Joi.string(),
+              ...this.constructor.configSchema,
+            })
+            .unknown(),
+        )
       : config;
 
     this.filePath = new Error().stack
