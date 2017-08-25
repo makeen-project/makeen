@@ -11,6 +11,11 @@ class Router extends Module {
     autoload: Joi.boolean().default(true),
   };
 
+  static moduleConfigSchema = {
+    autoload: Joi.boolean().default(true),
+    prefixPath: Joi.string().default('/'),
+  };
+
   name = 'makeen.router';
 
   constructor(...args) {
@@ -34,9 +39,16 @@ class Router extends Module {
   }
 
   loadModuleRouter(module) {
+    const { autoload, prefixPath } = Joi.attempt(
+      module.getConfig('router', {}),
+      Router.moduleConfigSchema,
+    );
+
+    if (!autoload) {
+      return;
+    }
+
     let router = module.router;
-    const routesPrefix =
-      module.routesPrefix || module.getConfig('routesPrefix') || '/';
 
     if (!router) {
       const routerPath = path.resolve(path.dirname(module.filePath), 'router');
@@ -47,7 +59,7 @@ class Router extends Module {
     }
 
     if (router) {
-      this.addRouter(routesPrefix, `${module.name}Router`, router);
+      this.addRouter(prefixPath, `${module.name}Router`, router);
     }
   }
 
