@@ -13,7 +13,7 @@ class Security extends Module {
 
   name = 'makeen.security';
   hooks = {
-    'makeen.security.permissionsExtractor': ({ security }) => user =>
+    'makeen.security.createPermissionsExtractor': ({ security }) => user =>
       security.getUserPermissions({
         userId: user._id,
       }),
@@ -23,7 +23,9 @@ class Security extends Module {
   buildExtractor(extractors) {
     return async user => {
       const permissionsLists = await Promise.all(
-        extractors.map(extractor => extractor(user)),
+        extractors
+          .filter(extractor => extractor)
+          .map(extractor => extractor(user)),
       );
       return flatten(permissionsLists);
     };
@@ -47,9 +49,24 @@ class Security extends Module {
       Security: new SecurityServiceContainer(),
     });
 
-    const extractors = await this.createHook('permissionsExtractor', () => {}, {
-      security: services.Security,
-    });
+    const extractors = await this.createHook(
+      'createPermissionsExtractor',
+      // eslint-disable-next-line consistent-return
+      module => {
+        const permissionsExtractor = get(
+          module,
+          'security.permissionsExtractor',
+        );
+        if (permissionsExtractor) {
+          return permissionsExtractor({
+            security: services.Security,
+          });
+        }
+      },
+      {
+        security: services.Security,
+      },
+    );
 
     const permissionsManager = new PermissionsManager({
       extractor: this.buildExtractor(extractors),
