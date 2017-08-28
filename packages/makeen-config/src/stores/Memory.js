@@ -9,12 +9,24 @@ class MemoryStore {
     return _.has(this.backend, key);
   }
 
-  get(key, nextStore) {
+  async get(key, nextStore) {
     if (!this.has(key)) {
       return nextStore.get(key);
     }
 
-    return _.get(this.backend, key);
+    const ownValue = _.get(this.backend, key);
+
+    if (!_.isPlainObject(ownValue)) {
+      return ownValue;
+    }
+
+    const nextValue = await nextStore.get(key);
+
+    if (!_.isPlainObject(nextValue)) {
+      return ownValue;
+    }
+
+    return _.merge({}, nextValue, ownValue);
   }
 
   set(key, value) {
