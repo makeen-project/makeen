@@ -1,7 +1,8 @@
 import _ from 'lodash';
-import MemoryStore from './Memory';
+import isEmpty from 'lodash/isEmpty';
+import BaseStore from './Base';
 
-class EnvStore extends MemoryStore {
+class EnvStore extends BaseStore {
   static makeKey = (prefix, key) => {
     const path = _.toPath(key);
     const finalPath = path.map(item => _.toUpper(_.snakeCase(item))).join('_');
@@ -19,7 +20,7 @@ class EnvStore extends MemoryStore {
     return this.keys.includes(EnvStore.makeKey(this.prefix, key));
   }
 
-  getValue(key) {
+  getBackendValue(key) {
     const value = this.backend[EnvStore.makeKey(this.prefix, key)];
 
     try {
@@ -30,28 +31,14 @@ class EnvStore extends MemoryStore {
   }
 
   async get(key, nextStore) {
-    const hasValue = this.has(key);
-    const ownValue = hasValue ? this.getValue(key) : undefined;
+    const value = await BaseStore.prototype.get.call(this, key, nextStore);
+    const deepValue = this.getDeep(key, value);
 
-    if (ownValue !== undefined && !_.isPlainObject(ownValue)) {
-      return ownValue;
+    if (!this.has(key) && !isEmpty(deepValue)) {
+      return this.merge(key, value, deepValue);
     }
 
-    const nextValue = await nextStore.get(key);
-
-    if (!hasValue) {
-      return _.merge({}, nextValue, this.getDeep(key, nextValue));
-    }
-
-    if (!_.isPlainObject(nextValue)) {
-      return ownValue;
-    }
-
-    return _.merge(
-      {},
-      nextValue,
-      hasValue ? ownValue : this.getDeep(key, nextValue),
-    );
+    return value;
   }
 
   getDeep(prefix, value) {
@@ -61,7 +48,7 @@ class EnvStore extends MemoryStore {
       if (this.has(fullKey)) {
         return {
           ...acc,
-          [key]: this.getValue(fullKey),
+          [key]: this.getBackendValue(fullKey),
         };
       }
 

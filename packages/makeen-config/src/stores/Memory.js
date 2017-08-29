@@ -1,7 +1,9 @@
 import _ from 'lodash';
+import BaseStore from './Base';
 
-class MemoryStore {
+class MemoryStore extends BaseStore {
   constructor(backend = {}) {
+    super();
     this.backend = backend;
   }
 
@@ -9,24 +11,8 @@ class MemoryStore {
     return _.has(this.backend, key);
   }
 
-  async get(key, nextStore) {
-    if (!this.has(key)) {
-      return nextStore.get(key);
-    }
-
-    const ownValue = _.get(this.backend, key);
-
-    if (!_.isPlainObject(ownValue)) {
-      return ownValue;
-    }
-
-    const nextValue = await nextStore.get(key);
-
-    if (!_.isPlainObject(nextValue)) {
-      return ownValue;
-    }
-
-    return _.merge({}, nextValue, ownValue);
+  getBackendValue(key) {
+    return _.get(this.backend, key);
   }
 
   set(key, value) {
@@ -34,7 +20,7 @@ class MemoryStore {
     return this;
   }
 
-  merge(data) {
+  add(data) {
     _.merge(this.backend, data);
     return this;
   }

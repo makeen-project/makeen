@@ -1,6 +1,6 @@
 import set from 'lodash/set';
 
-class Alias {
+class AliasStore {
   constructor(backend, aliases = {}) {
     this.backend = backend;
     this.aliases = aliases;
@@ -67,4 +67,4 @@ class Alias {
   }
 }
 
-export default Alias;
+export default AliasStore;
