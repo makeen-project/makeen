@@ -35,7 +35,7 @@ class EnvStore extends BaseStore {
     const deepValue = this.getDeep(key, value);
 
     if (!this.has(key) && !isEmpty(deepValue)) {
-      return this.merge(key, value, deepValue);
+      return this.merge(value, deepValue);
     }
 
     return value;

@@ -30,14 +30,14 @@ class Base {
       return value;
     }
 
-    return this.merge(key, nextValue, value);
+    return this.merge(nextValue, value);
   }
 
   isMergeable(value) {
     return Array.isArray(value) || isPlainObject(value);
   }
 
-  merge(key, src1, src2) {
+  merge(src1, src2) {
     // eslint-disable-next-line consistent-return
     return mergeWith({}, src1, src2, (val1, val2) => {
       if (Array.isArray(val1) && Array.isArray(val2)) {
