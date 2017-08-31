@@ -1,6 +1,6 @@
 {
   "name": "makeen-logger",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Makeen logger module by the usage of winston.",
   "main": "build/index.js",
   "repository": {
