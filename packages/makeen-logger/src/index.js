@@ -15,12 +15,7 @@ class LoggerModule extends Module {
   };
   name = 'makeen.logger';
 
-  initialize({
-    logsDir,
-    printModules,
-    printDependencyGraph,
-    printMiddlewares,
-  }) {
+  initialize({ logsDir, printModules, printDependencyGraph, printMiddlewares }) {
     const logger = new Logger({
       transports: [
         new loggerTransports.Console({
@@ -37,7 +32,7 @@ class LoggerModule extends Module {
 
     process.on('unhandledRejection', reason => logger.error(reason));
 
-    this.export({ log: logger });
+    this.export({ logger });
 
     if (printModules) {
       this.printModules();
@@ -78,15 +73,9 @@ class LoggerModule extends Module {
         head: ['Id', 'Path', 'Params'],
       });
 
-      this.app.middlewares
-        .reject({ enabled: false })
-        .forEach(({ path: mPath, id, params }) => {
-          table.push([
-            id,
-            mPath || '/',
-            typeof params !== 'undefined' ? inspect(params) : 'N/A',
-          ]);
-        });
+      this.app.middlewares.reject({ enabled: false }).forEach(({ path: mPath, id, params }) => {
+        table.push([id, mPath || '/', typeof params !== 'undefined' ? inspect(params) : 'N/A']);
+      });
 
       console.log(table.toString());
     });

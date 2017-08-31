@@ -44,13 +44,7 @@ class Gql extends Module {
   }
 
   async setup() {
-    const {
-      collectFromModule,
-      addTypeDefs,
-      addTypeDefsByPath,
-      addResolvers,
-      addMiddleware,
-    } = this;
+    const { collectFromModule, addTypeDefs, addTypeDefsByPath, addResolvers, addMiddleware } = this;
 
     await this.createHook('load', collectFromModule, {
       addTypeDefs,
@@ -132,9 +126,7 @@ class Gql extends Module {
           await this.addTypeDefsByPath(get(module, 'graphql.typeDefsPath'));
         }
       } else {
-        await this.loadFromDir(
-          path.resolve(path.dirname(module.filePath), 'graphql'),
-        );
+        await this.loadFromDir(path.resolve(path.dirname(module.filePath), 'graphql'));
       }
     } catch (err) {}
   }
@@ -154,10 +146,7 @@ class Gql extends Module {
 
       const resolver = [...middlewares]
         .reverse()
-        .reduce(
-          (acc, middleware) => (...args) => middleware(...args, acc),
-          get(resolvers, branch),
-        );
+        .reduce((acc, middleware) => (...args) => middleware(...args, acc), get(resolvers, branch));
 
       set(resolvers, branch, resolver);
     });
@@ -167,7 +156,7 @@ class Gql extends Module {
         typeDefs: this.typeDefs,
         resolvers,
         logger: {
-          log: err => this.app.modules.get('makeen.logger').log.error(err),
+          log: err => this.app.modules.get('makeen.logger').logger.error(err),
         },
         allowUndefinedInResolve: false,
       }),
