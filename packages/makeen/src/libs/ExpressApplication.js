@@ -14,7 +14,14 @@ class ExpressApplication extends EventEmitter {
     this.request.app = this;
     this.response = response;
     this.response.app = this;
-    this.server = createServer(this.handle.bind(this));
+  }
+
+  get server() {
+    if (!this.httpServer) {
+      this.httpServer = createServer(this.handle.bind(this));
+    }
+
+    return this.httpServer;
   }
 
   listen(...args) {
