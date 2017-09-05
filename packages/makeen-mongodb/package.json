@@ -1,6 +1,6 @@
 {
   "name": "makeen-mongodb",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Makeen database storage module providing MongoDB integration.",
   "main": "build/index.js",
   "repository": {
@@ -15,7 +15,7 @@
   "homepage": "https://github.com/makeen-project/makeen#readme",
   "dependencies": {
     "joi": "10.5.1",
-    "makeen": "^1.4.3",
+    "makeen": "^1.4.4",
     "mongo-dnorm": "0.2.4",
     "mongodb": "2.2.27",
     "octobus-crud": "0.6.0",

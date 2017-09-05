@@ -1,6 +1,6 @@
 {
   "name": "makeen-user",
-  "version": "1.8.5",
+  "version": "1.8.6",
   "description": "Makeen user module providing authentication, authorization, users and accounts management.",
   "main": "build/index.js",
   "repository": {
@@ -22,9 +22,9 @@
     "joi": "10.5.1",
     "jsonwebtoken": "7.4.1",
     "lodash": "4.17.4",
-    "makeen": "^1.4.3",
-    "makeen-mongodb": "^1.4.2",
-    "makeen-router": "^1.6.4",
+    "makeen": "^1.4.4",
+    "makeen-mongodb": "^1.4.3",
+    "makeen-router": "^1.6.5",
     "moment": "2.18.1",
     "mongodb": "2.2.27",
     "octobus.js": "1.1.2",
