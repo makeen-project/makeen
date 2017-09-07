@@ -12,6 +12,7 @@ import merge from 'lodash/merge';
 import { makeExecutableSchema } from 'graphql-tools';
 import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 import mainResolvers from './graphql/resolvers';
+import modulesResolvers from './graphql/modulesResolvers';
 
 class Gql extends Module {
   static configSchema = {
@@ -27,7 +28,9 @@ class Gql extends Module {
     }),
     middlewarePivot: Joi.string().default('isMethod'),
     configureSchema: Joi.func().default(identity),
+    exposeModules: Joi.boolean().default(true),
   };
+
   name = 'makeen.graphQL';
   typeDefs = [];
   resolvers = mainResolvers;
@@ -43,7 +46,7 @@ class Gql extends Module {
     this.addMiddleware = this.addMiddleware.bind(this);
   }
 
-  async setup() {
+  async setup({ exposeModules }) {
     const { collectFromModule, addTypeDefs, addTypeDefsByPath, addResolvers, addMiddleware } = this;
 
     await this.createHook('load', collectFromModule, {
@@ -52,6 +55,11 @@ class Gql extends Module {
       addResolvers,
       addMiddleware,
     });
+
+    if (exposeModules) {
+      this.addResolvers(modulesResolvers);
+      await this.addTypeDefsByPath(path.resolve(__dirname, './graphql/modulesTypeDefs.graphql'));
+    }
 
     await this.createHook('buildContext', () => {}, {
       context: this.gqlContext,
@@ -118,6 +126,10 @@ class Gql extends Module {
   }
 
   async collectFromModule(module) {
+    if (!module.getConfig('graphql.autoload', true)) {
+      return;
+    }
+
     try {
       if (has(module, 'graphql')) {
         this.addTypeDefs(get(module, 'graphql.typeDefs', ''));

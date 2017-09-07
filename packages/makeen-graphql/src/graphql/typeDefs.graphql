@@ -1,16 +1,9 @@
 type Query {
-  hello: String
-  modules(name: String): [Module]
 }
 
 type Mutation {
-  ping: String
-}
-
-type Module {
-  name: String!
-  dependencies: [Module]
 }
 
 scalar Date
+
 scalar JSON
