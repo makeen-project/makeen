@@ -3,8 +3,12 @@ import { Kind } from 'graphql/language';
 import GraphQLJSON from 'graphql-type-json';
 
 export default {
-  Mutation: {},
-  Query: {},
+  Mutation: {
+    ping: () => 'pong',
+  },
+  Query: {
+    hello: () => 'Makeen it!',
+  },
   Date: new GraphQLScalarType({
     name: 'Date',
     description: 'Date custom scalar type',
