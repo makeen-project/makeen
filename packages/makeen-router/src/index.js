@@ -22,7 +22,6 @@ class Router extends Module {
   constructor(...args) {
     super(...args);
     this.addRouter = this.addRouter.bind(this);
-    this.addRoute = this.addRoute.bind(this);
     this.loadModuleRouter = this.loadModuleRouter.bind(this);
   }
 
