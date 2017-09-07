@@ -1,6 +1,7 @@
 import Joi from 'joi';
 import { Module } from 'makeen';
 import path from 'path';
+import { Router as ExpressRouter } from 'express';
 import BaseRouter from './libs/Router';
 import * as helpers from './libs/helpers';
 import generateRESTRouter from './libs/generateRESTRouter';
@@ -21,6 +22,7 @@ class Router extends Module {
   constructor(...args) {
     super(...args);
     this.addRouter = this.addRouter.bind(this);
+    this.addRoute = this.addRoute.bind(this);
     this.loadModuleRouter = this.loadModuleRouter.bind(this);
   }
 
@@ -65,16 +67,21 @@ class Router extends Module {
 
   async setup({ autoload }) {
     const { addRouter } = this;
+    const router = ExpressRouter();
 
     if (autoload) {
       await this.createHook('load', this.loadModuleRouter, {
         addRouter,
+        router,
       });
     }
+
+    addRouter('mainRouter', router);
 
     this.export({
       generateRESTRouter,
       addRouter,
+      router,
     });
   }
 }
