@@ -9,15 +9,11 @@ export default ({ jwtSecret }) => {
     new JwtStrategy(
       {
         secretOrKey: jwtSecret,
-        jwtFromRequest: ExtractJwt.fromExtractors([
-          ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
-        ]),
+        jwtFromRequest: ExtractJwt.fromExtractors([ExtractJwt.fromAuthHeaderWithScheme('Bearer')]),
         passReqToCallback: true,
       },
       async (req, id, done) => {
-        const { UserRepository, AccountRepository, User } = req.app.modules.get(
-          'makeen.user',
-        );
+        const { UserRepository, AccountRepository, User } = req.app.modules.get('makeen.user');
         try {
           const user = await UserRepository.findById(objectId(id));
           const account = await AccountRepository.findById(user.accountId);
@@ -65,11 +61,10 @@ export default ({ jwtSecret }) => {
     cb(null, user._id.toString());
   });
 
-  passport.deserializeUser((req, id, cb) => {
-    req.app.modules
-      .get('makeen.user.UserRepository')
-      .findById(objectId(id))
-      .then(user => cb(null, user), cb);
+  passport.deserializeUser(async (req, id, cb) => {
+    const { UserRepository } = await req.app.modules.get('makeen.user');
+
+    UserRepository.findById(objectId(id)).then(user => cb(null, user), cb);
   });
 
   return passport;
