@@ -12,6 +12,7 @@ class MongoDB extends Module {
       Joi.object().keys({
         name: Joi.string().required(),
         url: Joi.string().required(),
+        driverOptions: Joi.object(),
         Store: Joi.object().default(
           () => decorators.withTimestamps(MongoStore),
           'Mongo store',
@@ -89,8 +90,8 @@ class MongoDB extends Module {
   }
 
   async createConnection(options) {
-    const { name, Store, url } = options;
-    const db = await MongoClient.connect(url);
+    const { name, Store, url, driverOptions } = options;
+    const db = await MongoClient.connect(url, driverOptions);
     const refManager = new RefManager(db);
 
     const connection = {
