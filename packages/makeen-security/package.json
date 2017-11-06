@@ -1,6 +1,6 @@
 {
   "name": "makeen-security",
-  "version": "0.5.10",
+  "version": "0.6.0",
   "description": "Makeen security",
   "main": "build/index.js",
   "scripts": {},
@@ -20,7 +20,7 @@
     "joi": "10.5.1",
     "lodash": "4.17.4",
     "makeen": "^1.4.5",
-    "makeen-mongodb": "^1.4.4",
+    "makeen-mongodb": "^1.5.0",
     "mongodb": "2.2.27",
     "octobus.js": "1.1.2"
   }
